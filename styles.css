@@ -54,15 +54,15 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',Georgia,serif;line-height:1.12;font
 .header__inner{display:flex;align-items:center;justify-content:space-between;height:74px}
 .logo{display:inline-flex;align-items:center}
 .logo__badge{display:flex;flex-direction:column;align-items:center;justify-content:center;
-  width:62px;height:62px;border-radius:50%;
+  width:54px;height:54px;border-radius:50%;overflow:visible;
   background:radial-gradient(circle at 50% 40%,#1c1810,#0c0a06);
-  border:2px solid transparent;background-clip:padding-box;position:relative}
-.logo__badge::before{content:"";position:absolute;inset:-2px;border-radius:50%;padding:2px;
+  border:1.5px solid transparent;background-clip:padding-box;position:relative}
+.logo__badge::before{content:"";position:absolute;inset:-1.5px;border-radius:50%;padding:1.5px;
   background:var(--grad);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor;mask-composite:exclude}
-.logo__script{font-family:"Great Vibes",cursive;font-size:26px;line-height:.9;
+.logo__script{font-family:"Great Vibes",cursive;font-size:22px;line-height:1;padding-top:2px;
   background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-.logo__ua{font-family:'Cormorant Garamond';font-weight:700;font-size:8px;letter-spacing:4px;color:var(--accent-2);margin-top:-2px}
+.logo__ua{font-family:'Cormorant Garamond';font-weight:700;font-size:7px;letter-spacing:3px;color:var(--accent-2);margin-top:-1px}
 .nav{display:flex;align-items:center;gap:30px}
 .nav__link{color:var(--muted);font-weight:600;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;transition:.2s}
 .nav__link:hover{color:var(--accent-2)}
@@ -220,28 +220,56 @@ h1,h2,h3,h4{font-family:'Cormorant Garamond',Georgia,serif;line-height:1.12;font
 .reveal.in{opacity:1;transform:none}
 
 /* ===== Responsive ===== */
+section[id]{scroll-margin-top:84px}
+
 @media(max-width:980px){
   .grid{grid-template-columns:repeat(2,1fr)}
   .features__grid{grid-template-columns:repeat(2,1fr)}
-  .hero__inner{grid-template-columns:1fr;gap:40px}
-  .hero__card{max-width:420px;margin:0 auto}
+  .hero__inner{grid-template-columns:1fr;gap:36px}
+  .hero__card{max-width:460px;margin:0 auto}
   .order__inner,.footer__inner{grid-template-columns:1fr;gap:32px}
-  .nav{position:fixed;inset:74px 0 auto 0;flex-direction:column;background:rgba(12,11,16,.97);
-    backdrop-filter:blur(14px);padding:24px;gap:18px;border-bottom:1px solid var(--line);
-    transform:translateY(-130%);transition:.35s;align-items:flex-start}
+  .nav{position:fixed;inset:74px 0 auto 0;flex-direction:column;background:rgba(7,7,7,.97);
+    backdrop-filter:blur(14px);padding:14px 24px 22px;gap:0;border-bottom:1px solid var(--line);
+    transform:translateY(-135%);transition:.35s;align-items:stretch}
   .nav.open{transform:translateY(0)}
+  .nav__link{padding:14px 2px;font-size:13px;border-bottom:1px solid var(--line)}
+  .nav__phone{padding-top:14px}
   .burger{display:flex}
 }
-@media(max-width:620px){
-  .section{padding:70px 0}
-  .grid{grid-template-columns:1fr 1fr;gap:14px}
+
+@media(max-width:760px){
+  .section{padding:58px 0}
+  .container{padding:0 18px}
+  .section__head{margin-bottom:34px}
+  .section__sub{font-size:15px}
+  /* Вкладки меню — один ряд із горизонтальним скролом */
+  .tabs{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;
+    margin:0 -18px 26px;padding:2px 18px 10px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;scroll-snap-align:start}
+  .grid{grid-template-columns:repeat(2,1fr);gap:12px}
   .sets__grid,.reviews__grid{grid-template-columns:1fr}
-  .hero__stats{gap:24px}
-  .card__media{font-size:52px}
-  .footer__bottom .container{flex-direction:column}
+  .hero{padding:114px 0 60px}
+  .hero__text{font-size:16px;margin:18px 0 28px}
+  .hero__stats{gap:22px;margin-top:34px}
+  .hero__stats strong{font-size:24px}
+  .hero__card-media{height:220px}
+  .steps{grid-template-columns:1fr}
+  /* 16px поля вводу — щоб iOS не зумив сторінку при фокусі */
+  .cart__form input,.cart__form textarea{font-size:16px}
+  .footer__bottom .container{flex-direction:column;gap:6px;text-align:center}
 }
-@media(max-width:420px){
-  .grid{grid-template-columns:1fr}
+
+@media(max-width:440px){
+  .grid{grid-template-columns:1fr;gap:14px}
+  .card__media{aspect-ratio:16/10}
+  .card__title{font-size:18px}
+  .card__desc{font-size:13px}
+  .hero__cta{flex-direction:column}
+  .hero__cta .btn{width:100%}
+  .cart{width:100%}
+  .fab{right:16px;bottom:16px}
+  .feature{padding:24px 20px}
 }
 
 /* ===== Cart button (header) ===== */

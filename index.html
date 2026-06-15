@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SUSHI UA — доставка суші, бургерів, шаурми, піци та салатів. Свіжі інгредієнти, швидка доставка, втілюємо найсмачніші бажання." />
+  <title>SUSHI UA — Втілюємо найсмачніші бажання</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===== Header ===== -->
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="#hero" class="logo" aria-label="SUSHI UA">
+        <span class="logo__mark">🍣</span>
+        <span class="logo__text">SUSHI<span class="logo__accent"> UA</span></span>
+      </a>
+
+      <nav class="nav" id="nav">
+        <a href="#menu" class="nav__link">Меню</a>
+        <a href="#sets" class="nav__link">Сети</a>
+        <a href="#features" class="nav__link">Чому ми</a>
+        <a href="#reviews" class="nav__link">Відгуки</a>
+        <a href="#contacts" class="nav__link">Контакти</a>
+        <a href="tel:+380000000000" class="nav__phone">+38 (000) 000-00-00</a>
+      </nav>
+
+      <div class="header__actions">
+        <a href="#order" class="btn btn--primary btn--sm">Замовити</a>
+        <button class="burger" id="burger" aria-label="Меню" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero" id="hero">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="container hero__inner">
+      <div class="hero__content reveal">
+        <span class="badge">🔥 Доставка щодня 10:00 – 22:00</span>
+        <h1 class="hero__title">
+          Втілюємо <span class="grad">найсмачніші</span> бажання
+        </h1>
+        <p class="hero__text">
+          Свіжі суші, соковиті бургери, ароматна шаурма, піца та салати —
+          готуємо з любов'ю та доставляємо гарячими прямо до твоїх дверей.
+        </p>
+        <div class="hero__cta">
+          <a href="#menu" class="btn btn--primary">Переглянути меню</a>
+          <a href="#order" class="btn btn--ghost">Замовити дзвінком</a>
+        </div>
+        <ul class="hero__stats">
+          <li><strong>30 хв</strong><span>середня доставка</span></li>
+          <li><strong>2&nbsp;000+</strong><span>задоволених клієнтів</span></li>
+          <li><strong>4.9★</strong><span>рейтинг гостей</span></li>
+        </ul>
+      </div>
+
+      <div class="hero__card reveal">
+        <div class="hero__plate">🍱</div>
+        <div class="hero__price">
+          <span>Сет «Філадельфія»</span>
+          <strong>від 249 ₴</strong>
+        </div>
+        <div class="hero__tag hero__tag--1">🥢 Свіже щодня</div>
+        <div class="hero__tag hero__tag--2">🚚 Безкоштовна доставка від 400 ₴</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Categories ===== -->
+  <section class="cats" id="categories">
+    <div class="container">
+      <div class="cats__row">
+        <a href="#menu" class="cat">🍣<span>Суші &amp; роли</span></a>
+        <a href="#sets" class="cat">🍱<span>Сети</span></a>
+        <a href="#menu" class="cat">🍔<span>Бургери</span></a>
+        <a href="#menu" class="cat">🌯<span>Шаурма</span></a>
+        <a href="#menu" class="cat">🍕<span>Піца</span></a>
+        <a href="#menu" class="cat">🥗<span>Салати</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Menu ===== -->
+  <section class="menu section" id="menu">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">Наше меню</span>
+        <h2 class="section__title">Обирай улюблене</h2>
+        <p class="section__sub">Найпопулярніші позиції, які замовляють найчастіше.</p>
+      </div>
+
+      <div class="tabs reveal" id="tabs">
+        <button class="tab is-active" data-filter="all">Все</button>
+        <button class="tab" data-filter="sushi">Суші &amp; роли</button>
+        <button class="tab" data-filter="burger">Бургери</button>
+        <button class="tab" data-filter="shawarma">Шаурма</button>
+        <button class="tab" data-filter="pizza">Піца</button>
+        <button class="tab" data-filter="salad">Салати</button>
+      </div>
+
+      <div class="grid" id="menuGrid">
+        <!-- cards injected by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Sets ===== -->
+  <section class="sets section" id="sets">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">Вигідно разом</span>
+        <h2 class="section__title">Сети для компанії</h2>
+        <p class="section__sub">Більше суші — менша ціна. Ідеально для вечора з друзями.</p>
+      </div>
+
+      <div class="sets__grid">
+        <article class="set reveal">
+          <div class="set__emoji">🍱</div>
+          <h3>Сет «Мінімал»</h3>
+          <p>16 шматочків · 2 роли · імбир, васабі, соєвий соус</p>
+          <div class="set__bottom"><span class="set__price">249 ₴</span><a href="#order" class="btn btn--primary btn--sm">Замовити</a></div>
+        </article>
+        <article class="set set--featured reveal">
+          <span class="set__label">Хіт продажів</span>
+          <div class="set__emoji">🍣</div>
+          <h3>Сет «Компанія»</h3>
+          <p>40 шматочків · 5 ролів · соуси у подарунок</p>
+          <div class="set__bottom"><span class="set__price">549 ₴</span><a href="#order" class="btn btn--primary btn--sm">Замовити</a></div>
+        </article>
+        <article class="set reveal">
+          <div class="set__emoji">🥢</div>
+          <h3>Сет «Гурман»</h3>
+          <p>64 шматочки · 8 ролів · напій у подарунок</p>
+          <div class="set__bottom"><span class="set__price">899 ₴</span><a href="#order" class="btn btn--primary btn--sm">Замовити</a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Features ===== -->
+  <section class="features section" id="features">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">Чому обирають нас</span>
+        <h2 class="section__title">Смачно. Швидко. Якісно.</h2>
+      </div>
+      <div class="features__grid">
+        <div class="feature reveal"><div class="feature__ico">🐟</div><h3>Свіжі інгредієнти</h3><p>Готуємо лише зі свіжих продуктів щодня. Жодних заморожених напівфабрикатів.</p></div>
+        <div class="feature reveal"><div class="feature__ico">🚚</div><h3>Швидка доставка</h3><p>Привеземо замовлення гарячим за ~30 хвилин по місту.</p></div>
+        <div class="feature reveal"><div class="feature__ico">👨‍🍳</div><h3>Готуємо з душею</h3><p>Кожну страву робимо так, ніби для себе. Втілюємо найсмачніші бажання.</p></div>
+        <div class="feature reveal"><div class="feature__ico">💳</div><h3>Зручна оплата</h3><p>Готівка, картка кур'єру або онлайн — як вам комфортно.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Order CTA ===== -->
+  <section class="order section" id="order">
+    <div class="container order__inner reveal">
+      <div class="order__text">
+        <span class="eyebrow">Замовлення</span>
+        <h2 class="section__title">Зголоднів? Замовляй просто зараз</h2>
+        <p>Телефонуй або напиши нам у месенджер — оформимо замовлення за хвилину.</p>
+        <div class="order__btns">
+          <a href="tel:+380000000000" class="btn btn--primary">📞 Подзвонити</a>
+          <a href="https://t.me/" class="btn btn--tg" target="_blank" rel="noopener">✈️ Telegram</a>
+          <a href="https://instagram.com/" class="btn btn--ig" target="_blank" rel="noopener">📷 Instagram</a>
+        </div>
+      </div>
+      <form class="order__form" id="orderForm">
+        <h3>Залишити заявку</h3>
+        <label>Ваше ім'я<input type="text" name="name" placeholder="Олександр" required /></label>
+        <label>Телефон<input type="tel" name="phone" placeholder="+38 (0__) ___-__-__" required /></label>
+        <label>Коментар<textarea name="note" rows="3" placeholder="Що бажаєте замовити?"></textarea></label>
+        <button type="submit" class="btn btn--primary btn--full">Надіслати заявку</button>
+        <p class="order__note" id="formNote" hidden>✅ Дякуємо! Ми зателефонуємо вам найближчим часом.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== Reviews ===== -->
+  <section class="reviews section" id="reviews">
+    <div class="container">
+      <div class="section__head reveal">
+        <span class="eyebrow">Відгуки ❤️</span>
+        <h2 class="section__title">Що кажуть гості</h2>
+      </div>
+      <div class="reviews__grid">
+        <figure class="review reveal"><div class="stars">★★★★★</div><blockquote>«Найсмачніші роли в місті! Доставили гарячими і дуже швидко. Замовляємо щотижня.»</blockquote><figcaption>— Марія К.</figcaption></figure>
+        <figure class="review reveal"><div class="stars">★★★★★</div><blockquote>«Сет «Компанія» — це любов. Свіжо, красиво подано, ще й соуси у подарунок.»</blockquote><figcaption>— Андрій В.</figcaption></figure>
+        <figure class="review reveal"><div class="stars">★★★★★</div><blockquote>«Беру і суші, і шаурму — все на висоті. Сервіс топ, рекомендую всім!»</blockquote><figcaption>— Ірина С.</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer / Contacts ===== -->
+  <footer class="footer" id="contacts">
+    <div class="container footer__inner">
+      <div class="footer__col footer__brand">
+        <a href="#hero" class="logo"><span class="logo__mark">🍣</span><span class="logo__text">SUSHI<span class="logo__accent"> UA</span></span></a>
+        <p>Втілюємо найсмачніші бажання. Суші, бургери, шаурма, піца та салати з доставкою.</p>
+        <div class="footer__socials">
+          <a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">📷</a>
+          <a href="https://t.me/" target="_blank" rel="noopener" aria-label="Telegram">✈️</a>
+          <a href="viber://" aria-label="Viber">💜</a>
+        </div>
+      </div>
+      <div class="footer__col">
+        <h4>Меню</h4>
+        <a href="#menu">Суші &amp; роли</a>
+        <a href="#menu">Бургери</a>
+        <a href="#menu">Шаурма</a>
+        <a href="#menu">Піца</a>
+        <a href="#menu">Салати</a>
+      </div>
+      <div class="footer__col">
+        <h4>Контакти</h4>
+        <a href="tel:+380000000000">+38 (000) 000-00-00</a>
+        <a href="mailto:hello@sushiua.example">hello@sushiua.example</a>
+        <p>м. Київ, вул. Прикладна, 1</p>
+      </div>
+      <div class="footer__col">
+        <h4>Графік роботи</h4>
+        <p>Пн – Нд</p>
+        <p class="footer__hours">10:00 – 22:00</p>
+        <a href="#order" class="btn btn--primary btn--sm">Замовити</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="container">
+        <p>© <span id="year"></span> SUSHI UA. Усі права захищено.</p>
+        <p class="footer__demo">Демо-макет сайту · приклад дизайну</p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="#order" class="fab" aria-label="Замовити">🛒</a>
+
+  <script src="script.js"></script>
+</body>
+</html>

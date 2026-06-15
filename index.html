@@ -32,7 +32,8 @@
 
       <div class="header__actions">
         <button class="cart-btn" id="cartOpen" aria-label="Кошик">
-          🛒 <span class="cart-btn__count" id="cartCount">0</span>
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+          <span class="cart-btn__count" id="cartCount">0</span>
         </button>
         <button class="burger" id="burger" aria-label="Меню" aria-expanded="false">
           <span></span><span></span><span></span>
@@ -46,7 +47,7 @@
     <div class="hero__bg" aria-hidden="true"></div>
     <div class="container hero__inner">
       <div class="hero__content reveal">
-        <span class="badge">🔥 Доставка щодня 10:00 – 22:00</span>
+        <span class="badge">Доставка щодня · 10:00 – 22:00</span>
         <h1 class="hero__title">
           Усе меню в <span class="grad">одному місці</span>
         </h1>
@@ -67,9 +68,11 @@
       </div>
 
       <div class="hero__card reveal">
-        <div class="hero__card-media">🍱</div>
+        <div class="hero__card-media">
+          <svg class="dish-ic" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><circle cx="28" cy="42" r="15"/><circle cx="28" cy="42" r="7"/><circle cx="52" cy="42" r="15"/><circle cx="52" cy="42" r="7"/><circle cx="52" cy="42" r="2.6" fill="currentColor" stroke="none"/></svg>
+        </div>
         <div class="hero__card-body">
-          <span class="hero__card-tag">⭐ Хіт продажів</span>
+          <span class="hero__card-tag">Хіт продажів</span>
           <h3>Суші бургер «Лосось»</h3>
           <p>Велика порція 350–380 г · свіже щодня</p>
           <div class="hero__card-foot">
@@ -118,10 +121,10 @@
         <h2 class="section__title">Смачно. Свіжо. Якісно.</h2>
       </div>
       <div class="features__grid">
-        <div class="feature reveal"><div class="feature__ico">🐟</div><h3>Свіжі інгредієнти</h3><p>Готуємо щодня зі свіжих продуктів. Велика порція начинки.</p></div>
-        <div class="feature reveal"><div class="feature__ico">🥢</div><h3>Усе входить у ціну</h3><p>Соуси, імбир, васабі, рукавички та упаковка — вже включені.</p></div>
-        <div class="feature reveal"><div class="feature__ico">🚚</div><h3>Швидка доставка</h3><p>Привеземо замовлення свіжим за ~30 хвилин по місту.</p></div>
-        <div class="feature reveal"><div class="feature__ico">👨‍🍳</div><h3>Готуємо з душею</h3><p>Кожну страву робимо як для себе. Втілюємо найсмачніші бажання.</p></div>
+        <div class="feature reveal"><div class="feature__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c3-5 9-6 15-4 2.5.8 5 2.2 5 4s-2.5 3.2-5 4c-6 2-12 1-15-4z"/><circle cx="17" cy="11" r="1" fill="currentColor"/></svg></div><h3>Свіжі інгредієнти</h3><p>Готуємо щодня зі свіжих продуктів. Велика порція начинки.</p></div>
+        <div class="feature reveal"><div class="feature__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 21L19 5"/><path d="M7 21L21 9"/></svg></div><h3>Усе входить у ціну</h3><p>Соуси, імбир, васабі, рукавички та упаковка — вже включені.</p></div>
+        <div class="feature reveal"><div class="feature__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h12v9H2z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="6.5" cy="18" r="1.7"/><circle cx="17.5" cy="18" r="1.7"/></svg></div><h3>Швидка доставка</h3><p>Привеземо замовлення свіжим за ~30 хвилин по місту.</p></div>
+        <div class="feature reveal"><div class="feature__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-9.5-8.5C1 9.5 3 6.5 6 6.5c2 0 3.2 1.2 6 4 2.8-2.8 4-4 6-4 3 0 5 3 3.5 6C19 16.5 12 21 12 21z"/></svg></div><h3>Готуємо з душею</h3><p>Кожну страву робимо як для себе. Втілюємо найсмачніші бажання.</p></div>
       </div>
     </div>
   </section>
@@ -130,7 +133,7 @@
   <section class="reviews section" id="reviews">
     <div class="container">
       <div class="section__head reveal">
-        <span class="eyebrow">Відгуки ❤️</span>
+        <span class="eyebrow">Відгуки</span>
         <h2 class="section__title">Що кажуть гості</h2>
       </div>
       <div class="reviews__grid">
@@ -148,8 +151,8 @@
         <a href="#hero" class="logo"><span class="logo__badge"><span class="logo__script">Sushi</span><span class="logo__ua">U A</span></span></a>
         <p>Втілюємо найсмачніші бажання. Суші, роли, суші-бургери та Sushi Dog з доставкою.</p>
         <div class="footer__socials">
-          <a href="https://instagram.com/sushiua_" target="_blank" rel="noopener" aria-label="Instagram">📷</a>
-          <a href="https://t.me/sushiua_" target="_blank" rel="noopener" aria-label="Telegram">✈️</a>
+          <a href="https://instagram.com/sushiua_" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://t.me/sushiua_" target="_blank" rel="noopener" aria-label="Telegram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.5 4.3L2.9 11.5c-.9.4-.9 1.2-.1 1.4l4.6 1.4 1.8 5.6c.2.6.6.7 1.1.3l2.6-2.1 4.7 3.5c.5.3 1 .1 1.1-.5l3.3-15.4c.2-.8-.3-1.2-1-.9z"/></svg></a>
         </div>
       </div>
       <div class="footer__col">
@@ -185,14 +188,14 @@
   <div class="cart-overlay" id="cartOverlay"></div>
   <aside class="cart" id="cart" aria-label="Кошик замовлення">
     <div class="cart__head">
-      <h3>🛒 Ваше замовлення</h3>
+      <h3>Ваше замовлення</h3>
       <button class="cart__close" id="cartClose" aria-label="Закрити">✕</button>
     </div>
 
     <div class="cart__items" id="cartItems"><!-- items injected --></div>
 
     <div class="cart__empty" id="cartEmpty">
-      <div class="cart__empty-ico">🍱</div>
+      <div class="cart__empty-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></div>
       <p>Кошик поки порожній</p>
       <span>Додайте страви з меню, щоб оформити замовлення</span>
     </div>
@@ -208,14 +211,14 @@
         <span>Разом:</span>
         <strong id="cartTotal">0 ₴</strong>
       </div>
-      <button class="btn btn--tg btn--full" id="sendTg" disabled>✈️ Замовити через Telegram</button>
-      <p class="cart__hint cart__soon">🔧 Онлайн-замовлення через Telegram скоро запрацює. Поки що скопіюйте замовлення та надішліть нам у Direct.</p>
-      <button class="btn btn--primary btn--full" id="copyOrder">📋 Скопіювати замовлення</button>
-      <p class="cart__copied" id="copied" hidden>✅ Замовлення скопійовано!</p>
+      <button class="btn btn--tg btn--full" id="sendTg" disabled>Замовити через Telegram</button>
+      <p class="cart__hint cart__soon">Онлайн-замовлення через Telegram скоро запрацює. Поки що скопіюйте замовлення та надішліть нам у Direct.</p>
+      <button class="btn btn--primary btn--full" id="copyOrder">Скопіювати замовлення</button>
+      <p class="cart__copied" id="copied" hidden>✓ Замовлення скопійовано</p>
     </div>
   </aside>
 
-  <button class="fab" id="fab" aria-label="Кошик">🛒<span class="fab__count" id="fabCount">0</span></button>
+  <button class="fab" id="fab" aria-label="Кошик"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="fab__count" id="fabCount">0</span></button>
 
   <!-- ===== Product modal ===== -->
   <div class="modal-overlay" id="modalOverlay"></div>

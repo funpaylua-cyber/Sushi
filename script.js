@@ -112,9 +112,17 @@ const tabsEl = document.getElementById("tabs");
 
 tabsEl.innerHTML =
   `<button class="tab is-active" data-filter="all">Все меню</button>` +
-  CATEGORIES.map(c => `<button class="tab" data-filter="${c.key}">${c.icon} ${c.name}</button>`).join("");
+  CATEGORIES.map(c => `<button class="tab" data-filter="${c.key}">${c.name}</button>`).join("");
 
 const catName = (key) => (CATEGORIES.find(c => c.key === key) || {}).name || "";
+
+/* Елегантна лінійна іконка (поки немає фото) */
+const DISH_ICON = `<svg class="dish-ic" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><circle cx="28" cy="42" r="15"/><circle cx="28" cy="42" r="7"/><circle cx="52" cy="42" r="15"/><circle cx="52" cy="42" r="7"/><circle cx="52" cy="42" r="2.6" fill="currentColor" stroke="none"/></svg>`;
+
+/* Якщо у страви є фото (item.img) — показуємо його, інакше іконку */
+const mediaHTML = (i) => i.img
+  ? `<img class="dish-img" src="${i.img}" alt="${i.title}" loading="lazy">`
+  : DISH_ICON;
 
 function cardHTML(i){
   return `
@@ -122,7 +130,7 @@ function cardHTML(i){
       <div class="card__media">
         ${i.badge ? `<span class="card__badge">${i.badge}</span>` : ""}
         <span class="card__cat">${catName(i.cat)}</span>
-        ${i.emoji}
+        ${mediaHTML(i)}
       </div>
       <div class="card__body">
         <h3 class="card__title">${i.title}</h3>
@@ -199,7 +207,7 @@ function renderCart(){
     const addonNames = line.addons.map(a => ADDON_BY_ID[a]?.title).filter(Boolean).join(", ");
     return `
       <div class="ci">
-        <div class="ci__emoji">${i.emoji}</div>
+        <div class="ci__ic">${DISH_ICON}</div>
         <div class="ci__info">
           <span class="ci__title">${i.title}</span>
           ${addonNames ? `<span class="ci__addons">+ ${addonNames}</span>` : ""}
@@ -275,7 +283,7 @@ function renderProduct(){
       <div class="pm__addons">
         ${ADDONS.map(a => `
           <button class="addon ${pState.addons.has(a.id) ? "is-on" : ""}" data-addon="${a.id}">
-            <span class="addon__l">${a.emoji} ${a.title}</span>
+            <span class="addon__l">${a.title}</span>
             <span class="addon__p">+${a.price} ₴</span>
           </button>`).join("")}
       </div>
@@ -288,7 +296,7 @@ function renderProduct(){
       <div class="pm__similar">
         ${similar.map(s => `
           <button class="sim" data-open="${s.id}">
-            <span class="sim__emoji">${s.emoji}</span>
+            <span class="sim__ic">${DISH_ICON}</span>
             <span class="sim__title">${s.title}</span>
             <span class="sim__price">${s.price} ₴</span>
           </button>`).join("")}
@@ -298,7 +306,7 @@ function renderProduct(){
   modalBody.innerHTML = `
     <div class="pm__media">
       ${i.badge ? `<span class="card__badge">${i.badge}</span>` : ""}
-      <span class="pm__emoji">${i.emoji}</span>
+      ${mediaHTML(i)}
     </div>
     <div class="pm__main">
       <span class="pm__cat">${catName(i.cat)}</span>

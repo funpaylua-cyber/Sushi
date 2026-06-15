@@ -388,9 +388,47 @@ h1,h2,h3,h4{font-family:"Unbounded",sans-serif;line-height:1.1;font-weight:700}
 @media(max-width:680px){
   .modal{max-height:92vh}
   .modal__body{grid-template-columns:1fr;max-height:92vh;overflow-y:auto}
-  .pm__media{height:180px}
-  .pm__emoji{font-size:96px}
+  .pm__media{height:200px}
   .pm__main{padding:22px}
   .pm__addons{grid-template-columns:1fr}
   .pm__similar{grid-template-columns:repeat(2,1fr)}
 }
+
+/* ===========================================================
+   ІКОНКИ ТА ФОТО-ГОТОВІ ПЛИТКИ (замість емодзі)
+   =========================================================== */
+.ic{width:22px;height:22px;display:block}
+.cart-btn{display:inline-flex;align-items:center;gap:7px}
+.cart-btn .ic{color:var(--text)}
+.fab .ic{width:24px;height:24px;color:var(--btn-ink)}
+
+/* лінійна іконка страви + місце під реальне фото */
+.dish-ic{width:34%;max-width:90px;color:var(--accent);opacity:.55}
+.dish-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card__media,.pm__media,.hero__card-media{overflow:hidden}
+.card__media .dish-ic{opacity:.5}
+.hero__card-media .dish-ic{width:100px;opacity:.6}
+
+/* features */
+.feature__ico{width:52px;height:52px;display:flex;align-items:center;justify-content:center;
+  border-radius:14px;background:rgba(212,175,55,.08);border:1px solid var(--line);margin-bottom:16px}
+.feature__ico svg{width:26px;height:26px;color:var(--accent)}
+
+/* footer socials */
+.footer__socials a svg{width:20px;height:20px;color:var(--accent)}
+
+/* cart empty */
+.cart__empty-ico{width:64px;height:64px;color:var(--accent);opacity:.5}
+.cart__empty-ico svg{width:100%;height:100%}
+
+/* cart item icon */
+.ci__ic{width:42px;height:42px;display:flex;align-items:center;justify-content:center;
+  background:var(--card-2);border:1px solid var(--line);border-radius:10px;flex:0 0 auto}
+.ci__ic .dish-ic{width:24px;opacity:.7}
+
+/* product modal media */
+.pm__media .dish-ic{width:150px;opacity:.55}
+
+/* similar items icon */
+.sim__ic{display:flex;align-items:center;justify-content:center;width:100%;height:42px}
+.sim__ic .dish-ic{width:34px;opacity:.7}

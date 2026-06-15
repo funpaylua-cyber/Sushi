@@ -2,8 +2,7 @@
    НАЛАШТУВАННЯ — замініть на свої контакти
    =========================================================== */
 const CONFIG = {
-  telegram: "sushiua_",          // username у Telegram (без @)
-  viberNumber: "380000000000",   // номер Viber у форматі 380XXXXXXXXX
+  telegram: "sushiua_",   // username у Telegram, куди приходять замовлення (без @)
   shopName: "SUSHI UA",
 };
 
@@ -252,18 +251,16 @@ function validateForm(){
   return true;
 }
 
-document.getElementById("sendTg").addEventListener("click", () => {
+document.getElementById("sendTg").addEventListener("click", async () => {
   if (!validateForm()) return;
-  const text = encodeURIComponent(buildOrderText());
-  // відкриває вибір чату в Telegram з готовим текстом
-  window.open(`https://t.me/share/url?url=${encodeURIComponent("https://"+CONFIG.telegram)}&text=${text}`, "_blank");
-});
+  const order = buildOrderText();
 
-document.getElementById("sendViber").addEventListener("click", () => {
-  if (!validateForm()) return;
-  const text = encodeURIComponent(buildOrderText());
-  // forward відкриває вибір чату у Viber з готовим текстом (на телефоні)
-  window.location.href = `viber://forward?text=${text}`;
+  // копіюємо текст у буфер, щоб клієнт міг просто вставити в чат
+  try { await navigator.clipboard.writeText(order); } catch {}
+
+  // відкриваємо Telegram із готовим текстом замовлення
+  const text = encodeURIComponent(order);
+  window.open(`https://t.me/share/url?url=${encodeURIComponent("https://t.me/"+CONFIG.telegram)}&text=${text}`, "_blank");
 });
 
 document.getElementById("copyOrder").addEventListener("click", async () => {

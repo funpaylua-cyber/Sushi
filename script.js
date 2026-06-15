@@ -116,13 +116,31 @@ tabsEl.innerHTML =
 
 const catName = (key) => (CATEGORIES.find(c => c.key === key) || {}).name || "";
 
-/* Елегантна лінійна іконка (поки немає фото) */
+/* Елегантна лінійна іконка (фолбек, якщо фото не завантажилось) */
 const DISH_ICON = `<svg class="dish-ic" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><circle cx="28" cy="42" r="15"/><circle cx="28" cy="42" r="7"/><circle cx="52" cy="42" r="15"/><circle cx="52" cy="42" r="7"/><circle cx="52" cy="42" r="2.6" fill="currentColor" stroke="none"/></svg>`;
 
-/* Якщо у страви є фото (item.img) — показуємо його, інакше іконку */
-const mediaHTML = (i) => i.img
-  ? `<img class="dish-img" src="${i.img}" alt="${i.title}" loading="lazy">`
-  : DISH_ICON;
+/* Стокові фото по категоріях (Unsplash). Можна замінити на власні
+   через поле item.img у конкретній страві. */
+const PHOTO = (id) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=640&q=70`;
+const CATEGORY_IMG = {
+  burger:       PHOTO("1553621042-f6e147245754"),
+  dog:          PHOTO("1606756790138-261d2b21cd75"),
+  philadelphia: PHOTO("1579871494447-9811cf80d66c"),
+  california:   PHOTO("1617196034796-73dfa7b1fd56"),
+  dragon:       PHOTO("1611143669185-af224c5e3252"),
+  cheese:       PHOTO("1607301405390-d831c242f59b"),
+  warm:         PHOTO("1583623025817-d180a2221d0a"),
+  maki:         PHOTO("1564489563601-c53cfc451e93"),
+  snacks:       PHOTO("1573080496219-bb080dd4f877"),
+};
+const imgFor = (i) => i.img || CATEGORY_IMG[i.cat] || "";
+
+/* Фото з фолбеком: якщо не завантажилось — лишається елегантна іконка під ним */
+const mediaHTML = (i) => {
+  const src = imgFor(i);
+  return `<span class="dish-fallback">${DISH_ICON}</span>` +
+    (src ? `<img class="dish-img" src="${src}" alt="${i.title}" loading="lazy" onerror="this.remove()">` : "");
+};
 
 function cardHTML(i){
   return `
@@ -207,7 +225,7 @@ function renderCart(){
     const addonNames = line.addons.map(a => ADDON_BY_ID[a]?.title).filter(Boolean).join(", ");
     return `
       <div class="ci">
-        <div class="ci__ic">${DISH_ICON}</div>
+        <div class="ci__ic">${mediaHTML(i)}</div>
         <div class="ci__info">
           <span class="ci__title">${i.title}</span>
           ${addonNames ? `<span class="ci__addons">+ ${addonNames}</span>` : ""}
@@ -296,7 +314,7 @@ function renderProduct(){
       <div class="pm__similar">
         ${similar.map(s => `
           <button class="sim" data-open="${s.id}">
-            <span class="sim__ic">${DISH_ICON}</span>
+            <span class="sim__ic">${mediaHTML(s)}</span>
             <span class="sim__title">${s.title}</span>
             <span class="sim__price">${s.price} ₴</span>
           </button>`).join("")}

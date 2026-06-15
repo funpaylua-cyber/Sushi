@@ -2,8 +2,9 @@
    НАЛАШТУВАННЯ — замініть на свої контакти
    =========================================================== */
 const CONFIG = {
-  telegram: "sushiua_",   // username у Telegram, куди приходять замовлення (без @)
+  telegram: "sushiua_",   // username у Telegram (без @) — для майбутнього онлайн-замовлення
   shopName: "SUSHI UA",
+  telegramEnabled: false, // ← поставте true, коли налаштуєте онлайн-замовлення
 };
 
 /* ===========================================================
@@ -84,9 +85,24 @@ const MENU = [
   { cat:"snacks", emoji:"🥣", title:"Соус «Ніжний часник»", desc:"30 г · домашній соус", price:10 },
   { cat:"snacks", emoji:"🥣", title:"Соус «Солодкий дим»",  desc:"30 г · домашній соус", price:10 },
   { cat:"snacks", emoji:"🌶️", title:"Соус «Спайсі»",        desc:"30 г · гострий домашній соус", price:10 },
-  { cat:"snacks", emoji:"🥑", title:"Авокадо (додаток)",     desc:"Додаток до суші-бургера", price:15 },
-  { cat:"snacks", emoji:"🟠", title:"Ікра масаго (додаток)", desc:"Додаток до суші-бургера", price:20 },
 ];
+MENU.forEach((item, i) => item.id = i);
+
+/* ===========================================================
+   ДОБАВКИ (доступні для всіх страв, крім закусок/соусів)
+   =========================================================== */
+const ADDONS = [
+  { id:"av",  emoji:"🥑", title:"Авокадо",        price:15 },
+  { id:"ms",  emoji:"🟠", title:"Ікра масаго",     price:20 },
+  { id:"ch",  emoji:"🧀", title:"Подвійний сир",   price:25 },
+  { id:"sp",  emoji:"🌶️", title:"Соус Спайсі",     price:10 },
+  { id:"gl",  emoji:"🧄", title:"Соус Часник",     price:10 },
+  { id:"sd",  emoji:"💨", title:"Соус Солодкий дим", price:10 },
+  { id:"gn",  emoji:"🫚", title:"Імбир",            price:10 },
+  { id:"wb",  emoji:"🥢", title:"Васабі",           price:10 },
+];
+const ADDON_BY_ID = Object.fromEntries(ADDONS.map(a => [a.id, a]));
+const hasAddons = (item) => item.cat !== "snacks";
 
 /* ===========================================================
    РЕНДЕР МЕНЮ + ВКЛАДКИ
@@ -94,20 +110,15 @@ const MENU = [
 const grid = document.getElementById("menuGrid");
 const tabsEl = document.getElementById("tabs");
 
-// індекс кожної страви в MENU — використовуємо як id у кошику
-MENU.forEach((item, i) => item.id = i);
-
-// вкладки
 tabsEl.innerHTML =
   `<button class="tab is-active" data-filter="all">Все меню</button>` +
   CATEGORIES.map(c => `<button class="tab" data-filter="${c.key}">${c.icon} ${c.name}</button>`).join("");
 
-function catName(key){ return (CATEGORIES.find(c => c.key === key) || {}).name || ""; }
+const catName = (key) => (CATEGORIES.find(c => c.key === key) || {}).name || "";
 
-function render(filter = "all"){
-  const items = filter === "all" ? MENU : MENU.filter(i => i.cat === filter);
-  grid.innerHTML = items.map(i => `
-    <article class="card">
+function cardHTML(i){
+  return `
+    <article class="card" data-open="${i.id}">
       <div class="card__media">
         ${i.badge ? `<span class="card__badge">${i.badge}</span>` : ""}
         <span class="card__cat">${catName(i.cat)}</span>
@@ -121,8 +132,12 @@ function render(filter = "all"){
           <button class="card__btn" data-add="${i.id}" aria-label="Додати ${i.title}" title="Додати в кошик">+</button>
         </div>
       </div>
-    </article>
-  `).join("");
+    </article>`;
+}
+
+function render(filter = "all"){
+  const items = filter === "all" ? MENU : MENU.filter(i => i.cat === filter);
+  grid.innerHTML = items.map(cardHTML).join("");
 }
 render();
 
@@ -134,82 +149,86 @@ tabsEl.addEventListener("click", (e) => {
   render(tab.dataset.filter);
 });
 
-/* ===========================================================
-   КОШИК
-   =========================================================== */
-const cart = {};          // { id: qty }
-const cartEl       = document.getElementById("cart");
-const overlay      = document.getElementById("cartOverlay");
-const cartItemsEl  = document.getElementById("cartItems");
-const cartEmptyEl  = document.getElementById("cartEmpty");
-const cartFootEl   = document.getElementById("cartFoot");
-const cartTotalEl  = document.getElementById("cartTotal");
+// клік по картці відкриває деталі; клік по "+" швидко додає
+grid.addEventListener("click", (e) => {
+  const add = e.target.closest("[data-add]");
+  if (add){ e.stopPropagation(); addToCart(+add.dataset.add); bumpFab(); return; }
+  const open = e.target.closest("[data-open]");
+  if (open) openProduct(+open.dataset.open);
+});
 
-function totalSum(){
-  return Object.entries(cart).reduce((s,[id,q]) => s + MENU[id].price * q, 0);
-}
-function totalCount(){
-  return Object.values(cart).reduce((s,q) => s + q, 0);
+/* ===========================================================
+   КОШИК (рядки з урахуванням добавок)
+   =========================================================== */
+const cart = {};   // key -> { id, addons:[ids], qty }
+const cartEl      = document.getElementById("cart");
+const overlay     = document.getElementById("cartOverlay");
+const cartItemsEl = document.getElementById("cartItems");
+const cartEmptyEl = document.getElementById("cartEmpty");
+const cartFootEl  = document.getElementById("cartFoot");
+const cartTotalEl = document.getElementById("cartTotal");
+
+const lineKey = (id, addons) => id + "|" + [...addons].sort().join(",");
+const addonsSum = (addons) => addons.reduce((s,a) => s + (ADDON_BY_ID[a]?.price || 0), 0);
+const linePrice = (line) => (MENU[line.id].price + addonsSum(line.addons)) * line.qty;
+const totalSum = () => Object.values(cart).reduce((s,l) => s + linePrice(l), 0);
+const totalCount = () => Object.values(cart).reduce((s,l) => s + l.qty, 0);
+
+function addToCart(id, addons = [], qty = 1){
+  const key = lineKey(id, addons);
+  if (cart[key]) cart[key].qty += qty;
+  else cart[key] = { id, addons:[...addons], qty };
+  renderCart();
 }
 
 function updateBadges(){
   const n = totalCount();
   document.getElementById("cartCount").textContent = n;
-  document.getElementById("fabCount").textContent = n;
-  document.getElementById("fabCount").style.display = n ? "flex" : "none";
+  const fc = document.getElementById("fabCount");
+  fc.textContent = n;
+  fc.style.display = n ? "flex" : "none";
 }
 
 function renderCart(){
-  const ids = Object.keys(cart);
-  const empty = ids.length === 0;
+  const keys = Object.keys(cart);
+  const empty = keys.length === 0;
   cartEmptyEl.style.display = empty ? "flex" : "none";
   cartFootEl.hidden = empty;
-  cartItemsEl.innerHTML = ids.map(id => {
-    const i = MENU[id], q = cart[id];
+  cartItemsEl.innerHTML = keys.map(key => {
+    const line = cart[key], i = MENU[line.id];
+    const addonNames = line.addons.map(a => ADDON_BY_ID[a]?.title).filter(Boolean).join(", ");
     return `
       <div class="ci">
         <div class="ci__emoji">${i.emoji}</div>
         <div class="ci__info">
           <span class="ci__title">${i.title}</span>
-          <span class="ci__price">${i.price} ₴</span>
+          ${addonNames ? `<span class="ci__addons">+ ${addonNames}</span>` : ""}
+          <span class="ci__price">${linePrice(line)} ₴</span>
         </div>
         <div class="ci__qty">
-          <button data-dec="${id}" aria-label="Менше">−</button>
-          <span>${q}</span>
-          <button data-inc="${id}" aria-label="Більше">+</button>
+          <button data-dec="${key}" aria-label="Менше">−</button>
+          <span>${line.qty}</span>
+          <button data-inc="${key}" aria-label="Більше">+</button>
         </div>
-        <button class="ci__del" data-del="${id}" aria-label="Видалити">🗑</button>
+        <button class="ci__del" data-del="${key}" aria-label="Видалити">🗑</button>
       </div>`;
   }).join("");
   cartTotalEl.textContent = totalSum() + " ₴";
   updateBadges();
 }
 
-function addToCart(id){
-  cart[id] = (cart[id] || 0) + 1;
-  renderCart();
-  bumpFab();
-}
-
-// делегування на кнопки "+" у меню
-grid.addEventListener("click", (e) => {
-  const btn = e.target.closest("[data-add]");
-  if (btn) addToCart(+btn.dataset.add);
-});
-
-// делегування всередині кошика
 cartItemsEl.addEventListener("click", (e) => {
   const inc = e.target.closest("[data-inc]");
   const dec = e.target.closest("[data-dec]");
   const del = e.target.closest("[data-del]");
-  if (inc){ cart[inc.dataset.inc]++; renderCart(); }
-  if (dec){ const id = dec.dataset.dec; if(--cart[id] <= 0) delete cart[id]; renderCart(); }
+  if (inc){ cart[inc.dataset.inc].qty++; renderCart(); }
+  if (dec){ const k = dec.dataset.dec; if(--cart[k].qty <= 0) delete cart[k]; renderCart(); }
   if (del){ delete cart[del.dataset.del]; renderCart(); }
 });
 
 /* ===== Відкриття / закриття кошика ===== */
-function openCart(){ cartEl.classList.add("open"); overlay.classList.add("show"); document.body.style.overflow="hidden"; }
-function closeCart(){ cartEl.classList.remove("open"); overlay.classList.remove("show"); document.body.style.overflow=""; }
+function openCart(){ cartEl.classList.add("open"); overlay.classList.add("show"); lockScroll(true); }
+function closeCart(){ cartEl.classList.remove("open"); overlay.classList.remove("show"); lockScroll(false); }
 document.getElementById("cartOpen").addEventListener("click", openCart);
 document.getElementById("cartOpen2").addEventListener("click", openCart);
 document.getElementById("fab").addEventListener("click", openCart);
@@ -222,55 +241,149 @@ function bumpFab(){
 }
 
 /* ===========================================================
-   ФОРМУВАННЯ ТЕКСТУ ЗАМОВЛЕННЯ + ВІДПРАВКА
+   КАРТКА ТОВАРУ (добавки + схожі товари)
+   =========================================================== */
+const modal        = document.getElementById("modal");
+const modalOverlay = document.getElementById("modalOverlay");
+const modalBody    = document.getElementById("modalBody");
+
+let pState = { id:null, addons:new Set(), qty:1 };
+
+function openProduct(id){
+  pState = { id, addons:new Set(), qty:1 };
+  renderProduct();
+  modal.classList.add("open");
+  modalOverlay.classList.add("show");
+  lockScroll(true);
+}
+function closeProduct(){
+  modal.classList.remove("open");
+  modalOverlay.classList.remove("show");
+  if (!cartEl.classList.contains("open")) lockScroll(false);
+}
+
+function productTotal(){
+  const base = MENU[pState.id].price + addonsSum([...pState.addons]);
+  return base * pState.qty;
+}
+
+function renderProduct(){
+  const i = MENU[pState.id];
+  const addonsBlock = hasAddons(i) ? `
+    <div class="pm__section">
+      <h4 class="pm__h">Додатки до страви</h4>
+      <div class="pm__addons">
+        ${ADDONS.map(a => `
+          <button class="addon ${pState.addons.has(a.id) ? "is-on" : ""}" data-addon="${a.id}">
+            <span class="addon__l">${a.emoji} ${a.title}</span>
+            <span class="addon__p">+${a.price} ₴</span>
+          </button>`).join("")}
+      </div>
+    </div>` : "";
+
+  const similar = MENU.filter(x => x.cat === i.cat && x.id !== i.id).slice(0, 4);
+  const similarBlock = similar.length ? `
+    <div class="pm__section">
+      <h4 class="pm__h">Схожі страви</h4>
+      <div class="pm__similar">
+        ${similar.map(s => `
+          <button class="sim" data-open="${s.id}">
+            <span class="sim__emoji">${s.emoji}</span>
+            <span class="sim__title">${s.title}</span>
+            <span class="sim__price">${s.price} ₴</span>
+          </button>`).join("")}
+      </div>
+    </div>` : "";
+
+  modalBody.innerHTML = `
+    <div class="pm__media">
+      ${i.badge ? `<span class="card__badge">${i.badge}</span>` : ""}
+      <span class="pm__emoji">${i.emoji}</span>
+    </div>
+    <div class="pm__main">
+      <span class="pm__cat">${catName(i.cat)}</span>
+      <h3 class="pm__title">${i.title}</h3>
+      <p class="pm__desc">${i.desc}</p>
+      ${addonsBlock}
+      <div class="pm__buy">
+        <div class="pm__qty">
+          <button data-pq="-1" aria-label="Менше">−</button>
+          <span id="pmQty">${pState.qty}</span>
+          <button data-pq="1" aria-label="Більше">+</button>
+        </div>
+        <button class="btn btn--primary pm__add" id="pmAdd">Додати — ${productTotal()} ₴</button>
+      </div>
+      ${similarBlock}
+    </div>`;
+}
+
+modalBody.addEventListener("click", (e) => {
+  const addon = e.target.closest("[data-addon]");
+  const pq = e.target.closest("[data-pq]");
+  const sim = e.target.closest("[data-open]");
+  const add = e.target.closest("#pmAdd");
+
+  if (addon){
+    const id = addon.dataset.addon;
+    pState.addons.has(id) ? pState.addons.delete(id) : pState.addons.add(id);
+    renderProduct();
+  } else if (pq){
+    pState.qty = Math.max(1, pState.qty + Number(pq.dataset.pq));
+    renderProduct();
+  } else if (sim){
+    openProduct(+sim.dataset.open);
+  } else if (add){
+    addToCart(pState.id, [...pState.addons], pState.qty);
+    bumpFab();
+    closeProduct();
+    openCart();
+  }
+});
+
+document.getElementById("modalClose").addEventListener("click", closeProduct);
+modalOverlay.addEventListener("click", closeProduct);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape"){ closeProduct(); closeCart(); }
+});
+
+/* ===========================================================
+   ТЕКСТ ЗАМОВЛЕННЯ + ВІДПРАВКА
    =========================================================== */
 function buildOrderText(){
   const f = document.getElementById("cartForm");
-  const name = f.name.value.trim();
-  const phone = f.phone.value.trim();
-  const address = f.address.value.trim();
-  const note = f.note.value.trim();
-
   let t = `🍣 Нове замовлення — ${CONFIG.shopName}\n\n`;
-  Object.entries(cart).forEach(([id,q]) => {
-    const i = MENU[id];
-    t += `• ${i.title} × ${q} — ${i.price*q} ₴\n`;
+  Object.values(cart).forEach(line => {
+    const i = MENU[line.id];
+    const addonNames = line.addons.map(a => ADDON_BY_ID[a]?.title).filter(Boolean).join(", ");
+    t += `• ${i.title}${addonNames ? " (" + addonNames + ")" : ""} × ${line.qty} — ${linePrice(line)} ₴\n`;
   });
   t += `\n💰 Разом: ${totalSum()} ₴\n\n`;
-  t += `👤 Ім'я: ${name}\n`;
-  t += `📞 Телефон: ${phone}\n`;
-  t += `📍 Адреса: ${address}\n`;
-  if (note) t += `📝 Коментар: ${note}\n`;
+  t += `👤 Ім'я: ${f.name.value.trim()}\n`;
+  t += `📞 Телефон: ${f.phone.value.trim()}\n`;
+  t += `📍 Адреса: ${f.address.value.trim()}\n`;
+  if (f.note.value.trim()) t += `📝 Коментар: ${f.note.value.trim()}\n`;
   return t;
 }
 
-function validateForm(){
-  const f = document.getElementById("cartForm");
-  if (!f.reportValidity()) return false;
-  if (totalCount() === 0) return false;
-  return true;
+// Кнопка Telegram поки неактивна (CONFIG.telegramEnabled = false)
+const sendTgBtn = document.getElementById("sendTg");
+sendTgBtn.disabled = !CONFIG.telegramEnabled;
+if (CONFIG.telegramEnabled){
+  sendTgBtn.addEventListener("click", () => {
+    const f = document.getElementById("cartForm");
+    if (!f.reportValidity() || totalCount() === 0) return;
+    const text = encodeURIComponent(buildOrderText());
+    window.open(`https://t.me/share/url?url=${encodeURIComponent("https://t.me/"+CONFIG.telegram)}&text=${text}`, "_blank");
+  });
 }
-
-document.getElementById("sendTg").addEventListener("click", async () => {
-  if (!validateForm()) return;
-  const order = buildOrderText();
-
-  // копіюємо текст у буфер, щоб клієнт міг просто вставити в чат
-  try { await navigator.clipboard.writeText(order); } catch {}
-
-  // відкриваємо Telegram із готовим текстом замовлення
-  const text = encodeURIComponent(order);
-  window.open(`https://t.me/share/url?url=${encodeURIComponent("https://t.me/"+CONFIG.telegram)}&text=${text}`, "_blank");
-});
 
 document.getElementById("copyOrder").addEventListener("click", async () => {
   if (totalCount() === 0) return;
-  try {
-    await navigator.clipboard.writeText(buildOrderText());
-  } catch {
-    // запасний варіант
+  const order = buildOrderText();
+  try { await navigator.clipboard.writeText(order); }
+  catch {
     const ta = document.createElement("textarea");
-    ta.value = buildOrderText(); document.body.appendChild(ta);
+    ta.value = order; document.body.appendChild(ta);
     ta.select(); document.execCommand("copy"); ta.remove();
   }
   const c = document.getElementById("copied");
@@ -278,8 +391,10 @@ document.getElementById("copyOrder").addEventListener("click", async () => {
 });
 
 /* ===========================================================
-   ДРІБНИЦІ: шапка, мобільне меню, анімації, рік
+   ДРІБНИЦІ
    =========================================================== */
+function lockScroll(on){ document.body.style.overflow = on ? "hidden" : ""; }
+
 const header = document.getElementById("header");
 window.addEventListener("scroll", () => header.classList.toggle("scrolled", window.scrollY > 20));
 
@@ -300,5 +415,4 @@ const io = new IntersectionObserver((entries) => {
 document.querySelectorAll(".reveal").forEach(el => io.observe(el));
 
 document.getElementById("year").textContent = new Date().getFullYear();
-
 updateBadges();

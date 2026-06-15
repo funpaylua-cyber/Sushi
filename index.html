@@ -7,7 +7,7 @@
   <title>SUSHI UA — Меню та замовлення онлайн</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -15,9 +15,11 @@
   <!-- ===== Header ===== -->
   <header class="header" id="header">
     <div class="container header__inner">
-      <a href="#hero" class="logo" aria-label="SUSHI UA">
-        <span class="logo__mark">🍣</span>
-        <span class="logo__text">SUSHI<span class="logo__accent"> UA</span></span>
+      <a href="#hero" class="logo" aria-label="Sushi UA">
+        <span class="logo__badge">
+          <span class="logo__script">Sushi</span>
+          <span class="logo__ua">U A</span>
+        </span>
       </a>
 
       <nav class="nav" id="nav">
@@ -65,13 +67,16 @@
       </div>
 
       <div class="hero__card reveal">
-        <div class="hero__plate">🍱</div>
-        <div class="hero__price">
-          <span>Суші бургер «Лосось»</span>
-          <strong>300 ₴</strong>
+        <div class="hero__card-media">🍱</div>
+        <div class="hero__card-body">
+          <span class="hero__card-tag">⭐ Хіт продажів</span>
+          <h3>Суші бургер «Лосось»</h3>
+          <p>Велика порція 350–380 г · свіже щодня</p>
+          <div class="hero__card-foot">
+            <strong>300 ₴</strong>
+            <a href="#menu" class="btn btn--primary btn--sm">До меню</a>
+          </div>
         </div>
-        <div class="hero__tag hero__tag--1">🥢 Свіже щодня</div>
-        <div class="hero__tag hero__tag--2">🚚 Доставка по місту</div>
       </div>
     </div>
   </section>
@@ -140,7 +145,7 @@
   <footer class="footer" id="contacts">
     <div class="container footer__inner">
       <div class="footer__col footer__brand">
-        <a href="#hero" class="logo"><span class="logo__mark">🍣</span><span class="logo__text">SUSHI<span class="logo__accent"> UA</span></span></a>
+        <a href="#hero" class="logo"><span class="logo__badge"><span class="logo__script">Sushi</span><span class="logo__ua">U A</span></span></a>
         <p>Втілюємо найсмачніші бажання. Суші, роли, суші-бургери та Sushi Dog з доставкою.</p>
         <div class="footer__socials">
           <a href="https://instagram.com/sushiua_" target="_blank" rel="noopener" aria-label="Instagram">📷</a>
@@ -203,14 +208,21 @@
         <span>Разом:</span>
         <strong id="cartTotal">0 ₴</strong>
       </div>
-      <p class="cart__hint">Надішліть замовлення нам у Telegram:</p>
-      <button class="btn btn--tg btn--full" id="sendTg">✈️ Замовити через Telegram</button>
-      <button class="btn btn--ghost btn--full" id="copyOrder">📋 Скопіювати замовлення</button>
+      <button class="btn btn--tg btn--full" id="sendTg" disabled>✈️ Замовити через Telegram</button>
+      <p class="cart__hint cart__soon">🔧 Онлайн-замовлення через Telegram скоро запрацює. Поки що скопіюйте замовлення та надішліть нам у Direct.</p>
+      <button class="btn btn--primary btn--full" id="copyOrder">📋 Скопіювати замовлення</button>
       <p class="cart__copied" id="copied" hidden>✅ Замовлення скопійовано!</p>
     </div>
   </aside>
 
   <button class="fab" id="fab" aria-label="Кошик">🛒<span class="fab__count" id="fabCount">0</span></button>
+
+  <!-- ===== Product modal ===== -->
+  <div class="modal-overlay" id="modalOverlay"></div>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Деталі страви">
+    <button class="modal__close" id="modalClose" aria-label="Закрити">✕</button>
+    <div class="modal__body" id="modalBody"><!-- injected by JS --></div>
+  </div>
 
   <script src="script.js"></script>
 </body>

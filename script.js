@@ -659,6 +659,36 @@ document.getElementById("schedToggle").addEventListener("click", () => {
 });
 
 /* ===========================================================
+   СПОСІБ ОТРИМАННЯ (В закладі / З собою / Доставка)
+   =========================================================== */
+const SERVICE = {
+  dinein:   { label:"В закладі", note:'Обслуговування <strong>в закладі</strong> · 10:00–22:00. Покажіть замовлення офіціанту.' },
+  takeaway: { label:"З собою",   note:'Самовивіз <strong>«З собою»</strong> · 10:00–22:00. Заберіть за адресою закладу.' },
+  delivery: { label:"Доставка",  note:'<strong>Доставка</strong> по місту · 10:00–22:00. Оформлюйте через Instagram Direct.' },
+};
+let selectedService = "delivery";
+const servicesEl  = document.getElementById("services");
+const venueNoteEl = document.getElementById("venueNote");
+
+function setService(key){
+  if (!SERVICE[key]) return;
+  selectedService = key;
+  servicesEl.querySelectorAll(".service").forEach(b => b.classList.toggle("service--on", b.dataset.service === key));
+  if (venueNoteEl) venueNoteEl.innerHTML = SERVICE[key].note;
+  const addr = document.querySelector('#cartForm input[name="address"]');
+  if (addr){
+    const delivery = key === "delivery";
+    addr.required = delivery;
+    addr.placeholder = delivery ? "Адреса доставки" : "Адреса (необов'язково)";
+  }
+}
+servicesEl.addEventListener("click", (e) => {
+  const b = e.target.closest(".service");
+  if (b) setService(b.dataset.service);
+});
+setService("delivery");
+
+/* ===========================================================
    ТЕКСТ ЗАМОВЛЕННЯ + ВІДПРАВКА
    =========================================================== */
 function buildOrderText(){
@@ -669,10 +699,12 @@ function buildOrderText(){
     const addonNames = line.addons.map(a => ADDON_BY_ID[a]?.title).filter(Boolean).join(", ");
     t += `• ${i.title}${addonNames ? " (" + addonNames + ")" : ""} × ${line.qty} — ${linePrice(line)} ₴\n`;
   });
-  t += `\n💰 Разом: ${totalSum()} ₴\n\n`;
+  t += `\n💰 Разом: ${totalSum()} ₴\n`;
+  t += `🧾 Спосіб: ${SERVICE[selectedService].label}\n\n`;
   t += `👤 Ім'я: ${f.name.value.trim()}\n`;
   t += `📞 Телефон: ${f.phone.value.trim()}\n`;
-  t += `📍 Адреса: ${f.address.value.trim()}\n`;
+  if (selectedService === "delivery" || f.address.value.trim())
+    t += `📍 Адреса: ${f.address.value.trim()}\n`;
   if (f.note.value.trim()) t += `📝 Коментар: ${f.note.value.trim()}\n`;
   return t;
 }

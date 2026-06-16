@@ -62,27 +62,27 @@
       <h1 class="venue__name">SUSHI UA</h1>
       <p class="venue__addr" id="venueAddr">вул. Прикладна, 1, Україна</p>
 
-      <div class="services">
-        <div class="service">
+      <div class="services" id="services">
+        <button type="button" class="service" data-service="dinein">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3v7a3 3 0 0 0 6 0V3"/><path d="M7 10v11"/><path d="M17 3c-1.7 0-3 2-3 5s1 4 3 4v9"/></svg>
           <strong>В закладі</strong>
           <span id="hrDinein">10:00–22:00</span>
-        </div>
-        <div class="service">
+        </button>
+        <button type="button" class="service" data-service="takeaway">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2l1 4h10l1-4"/><path d="M5 6h14l-1 15H6L5 6z"/><path d="M9 10v7M15 10v7"/></svg>
           <strong>З собою</strong>
           <span id="hrTakeaway">10:00–22:00</span>
-        </div>
-        <div class="service service--on">
+        </button>
+        <button type="button" class="service service--on" data-service="delivery">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13h11V6H3z"/><path d="M14 9h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.8"/><circle cx="17.5" cy="18" r="1.8"/></svg>
           <strong>Доставка</strong>
           <span id="hrDelivery">10:00–22:00</span>
-        </div>
+        </button>
       </div>
 
       <div class="venue__note">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l3 2"/></svg>
-        <span>Працюємо щодня <strong>10:00 – 22:00</strong>. Замовлення приймаємо в Instagram Direct.</span>
+        <span id="venueNote">Працюємо щодня <strong>10:00 – 22:00</strong>. Замовлення приймаємо в Instagram Direct.</span>
       </div>
     </div>
   </section>

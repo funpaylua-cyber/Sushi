@@ -2,9 +2,10 @@
    НАЛАШТУВАННЯ — замініть на свої контакти
    =========================================================== */
 const CONFIG = {
+  instagram: "sushiua_",  // username в Instagram (без @) — замовлення відкривається у Direct
   telegram: "sushiua_",   // username у Telegram (без @) — для майбутнього онлайн-замовлення
   shopName: "SUSHI UA",
-  telegramEnabled: false, // ← поставте true, коли налаштуєте онлайн-замовлення
+  telegramEnabled: false, // ← поставте true, коли налаштуєте онлайн-замовлення в Telegram
 };
 
 /* ===========================================================
@@ -403,8 +404,8 @@ if (CONFIG.telegramEnabled){
   });
 }
 
-document.getElementById("copyOrder").addEventListener("click", async () => {
-  if (totalCount() === 0) return;
+// Копіювання тексту замовлення в буфер (з резервним способом для старих браузерів)
+async function copyOrderToClipboard(){
   const order = buildOrderText();
   try { await navigator.clipboard.writeText(order); }
   catch {
@@ -412,8 +413,27 @@ document.getElementById("copyOrder").addEventListener("click", async () => {
     ta.value = order; document.body.appendChild(ta);
     ta.select(); document.execCommand("copy"); ta.remove();
   }
+}
+function flashCopied(msg){
   const c = document.getElementById("copied");
-  c.hidden = false; setTimeout(() => c.hidden = true, 2500);
+  c.textContent = msg || "✓ Замовлення скопійовано";
+  c.hidden = false; setTimeout(() => c.hidden = true, 3500);
+}
+
+// Instagram Direct: копіюємо замовлення і відкриваємо чат (вставити + надіслати)
+document.getElementById("sendIg").addEventListener("click", async () => {
+  const f = document.getElementById("cartForm");
+  if (totalCount() === 0 || !f.reportValidity()) return;
+  // Чат відкриваємо одразу в кліку — інакше popup-блокер може завадити
+  window.open(`https://ig.me/m/${CONFIG.instagram}`, "_blank", "noopener");
+  await copyOrderToClipboard();
+  flashCopied("✓ Замовлення скопійовано — вставте його у Direct і надішліть");
+});
+
+document.getElementById("copyOrder").addEventListener("click", async () => {
+  if (totalCount() === 0) return;
+  await copyOrderToClipboard();
+  flashCopied();
 });
 
 /* ===========================================================

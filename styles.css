@@ -727,3 +727,23 @@ a.info-row__val:hover{color:var(--accent-2)}
   .catnav .container{padding-left:16px;padding-right:16px}
   .searchbar__inner{padding-left:16px;padding-right:16px}
 }
+
+/* ===== Список категорій (drill-down) ===== */
+.catlist{display:flex;flex-direction:column;gap:12px;padding-top:8px}
+.catcard{display:flex;align-items:center;gap:14px;width:100%;padding:12px 14px;border:1px solid var(--line);
+  border-radius:14px;background:var(--card);color:var(--text);cursor:pointer;transition:.2s;text-align:left}
+.catcard:hover{border-color:var(--accent);transform:translateY(-2px)}
+.catcard__media{position:relative;overflow:hidden;width:64px;height:64px;border-radius:12px;flex:0 0 auto}
+.catcard__media .dish-fallback .dish-ic{width:26px}
+.catcard__info{display:flex;flex-direction:column;flex:1;min-width:0}
+.catcard__info strong{font-family:'Cormorant Garamond';font-size:24px;font-weight:600;line-height:1.1}
+.catcard__info span{color:var(--muted);font-size:13px;margin-top:2px}
+.catcard__chev{color:var(--muted);font-size:28px;line-height:1;flex:0 0 auto}
+
+.backcats{display:inline-flex;align-items:center;gap:6px;background:transparent;border:0;color:var(--accent-2);
+  font-weight:700;font-size:14px;cursor:pointer;padding:6px 0;margin-top:2px;font-family:"Manrope"}
+.backcats:hover{color:var(--accent)}
+
+@media(min-width:760px){
+  .catlist{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+}

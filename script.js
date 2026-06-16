@@ -167,8 +167,8 @@ const itemsOf = (subKey) => MENU.filter(i => i.cat === subKey);
 const usedSubs = (group) => group.subs.filter(s => itemsOf(s).length);
 const usedGroups = GROUPS.filter(g => usedSubs(g).length);
 
-let view = "all";          // all | popular | favorites | search
-let activeGroup = null;
+let view = "cats";         // cats | group | popular | favorites | search
+let currentGroup = null;
 
 function rowHTML(i){
   const w = weightOf(i.desc);
@@ -204,8 +204,26 @@ function flatSection(title, items){
   return `<section class="cat-section"><h2 class="cat-section__title">${title}</h2>${rowsBlock(items)}</section>`;
 }
 
-function groupsHTML(){
-  return usedGroups.map(g => `
+function catThumb(group){
+  const first = itemsOf(usedSubs(group)[0])[0];
+  return first ? mediaHTML(first) : "";
+}
+function catListHTML(){
+  return `<div class="catlist">${usedGroups.map(g => {
+    const count = usedSubs(g).reduce((n,s) => n + itemsOf(s).length, 0);
+    return `
+      <button class="catcard" data-group="${g.key}">
+        <span class="catcard__media">${catThumb(g)}</span>
+        <span class="catcard__info"><strong>${g.name}</strong><span>${count} позицій</span></span>
+        <span class="catcard__chev">›</span>
+      </button>`;
+  }).join("")}</div>`;
+}
+function groupViewHTML(key){
+  const g = usedGroups.find(x => x.key === key);
+  if (!g) return catListHTML();
+  return `
+    <button class="backcats" data-back="1">‹ Усі категорії</button>
     <div class="group" id="group-${g.key}">
       <h2 class="group__title">${g.name}</h2>
       ${usedSubs(g).map(s => `
@@ -213,7 +231,7 @@ function groupsHTML(){
           <h3 class="cat-section__title">${catName(s)}</h3>
           ${rowsBlock(itemsOf(s))}
         </section>`).join("")}
-    </div>`).join("");
+    </div>`;
 }
 
 const popularItems = () =>
@@ -223,7 +241,8 @@ const favItems = () => MENU.filter(i => favs.has(i.id));
 function renderMenu(){
   if (view === "popular")        menuRoot.innerHTML = flatSection("Популярне", popularItems());
   else if (view === "favorites") menuRoot.innerHTML = flatSection("Обрані", favItems());
-  else                           menuRoot.innerHTML = groupsHTML();
+  else if (view === "group")     menuRoot.innerHTML = groupViewHTML(currentGroup);
+  else                           menuRoot.innerHTML = catListHTML();
   setupSpy();
 }
 
@@ -246,34 +265,50 @@ function scrollChipIntoView(container){
   container.querySelector(".chip.is-active")?.scrollIntoView({ inline:"center", block:"nearest", behavior:"smooth" });
 }
 
-function setView(v){
+function showNavs(group, sub){
+  groupnav.style.display = group ? "" : "none";
+  subnav.style.display   = sub ? "" : "none";
+}
+function clearTabs(){ tabbar.querySelectorAll(".ftab").forEach(t => t.classList.remove("is-active")); }
+
+/* плавний скрол до меню з урахуванням липкої навігації */
+function scrollMenuTop(){
+  const navH = 64 + (document.querySelector(".catnav")?.offsetHeight || 0);
+  const y = document.getElementById("menu").getBoundingClientRect().top + window.scrollY - navH - 6;
+  window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+}
+
+/* показати список категорій (головний екран меню) */
+function showCats(){
+  view = "cats"; clearTabs(); showNavs(false, false); renderMenu();
+}
+/* відкрити одну категорію */
+function openGroup(key){
+  view = "group"; currentGroup = key;
+  clearTabs(); showNavs(true, true);
+  buildSubNav(key); setActiveChip(groupnav, "group", key);
+  renderMenu(); scrollMenuTop();
+}
+/* популярне / обрані */
+function setTab(v){
   view = v;
   tabbar.querySelectorAll(".ftab").forEach(t => t.classList.toggle("is-active", t.dataset.view === v));
-  const isMenu = (v === "all");
-  groupnav.style.display = isMenu ? "" : "none";
-  subnav.style.display   = isMenu ? "" : "none";
-  renderMenu();
-  if (isMenu){
-    activeGroup = usedGroups[0]?.key || null;
-    buildSubNav(activeGroup);
-    setActiveChip(groupnav, "group", activeGroup);
-  }
+  showNavs(false, false); renderMenu(); scrollMenuTop();
 }
 
 /* tabs (Популярне / Обрані) */
 tabbar.addEventListener("click", (e) => {
   const t = e.target.closest(".ftab");
   if (!t) return;
-  setView(view === t.dataset.view ? "all" : t.dataset.view);
-  document.getElementById("menu").scrollIntoView({ behavior:"smooth", block:"start" });
+  if (view === t.dataset.view) showCats();   // повторний клік — назад до категорій
+  else setTab(t.dataset.view);
 });
 
 /* групи */
 groupnav.addEventListener("click", (e) => {
   const chip = e.target.closest(".chip");
   if (!chip) return;
-  if (view !== "all"){ setView("all"); }
-  document.getElementById("group-" + chip.dataset.group)?.scrollIntoView({ behavior:"smooth", block:"start" });
+  openGroup(chip.dataset.group);
 });
 /* підкатегорії */
 subnav.addEventListener("click", (e) => {
@@ -282,25 +317,11 @@ subnav.addEventListener("click", (e) => {
   document.getElementById("cat-" + chip.dataset.sub)?.scrollIntoView({ behavior:"smooth", block:"start" });
 });
 
-/* scroll-spy для груп та підкатегорій */
-let groupSpy, subSpy;
+/* scroll-spy для підкатегорій усередині відкритої групи */
+let subSpy;
 function setupSpy(){
-  groupSpy?.disconnect(); subSpy?.disconnect();
-  if (view !== "all") return;
-
-  groupSpy = new IntersectionObserver((entries) => {
-    entries.forEach(en => {
-      if (!en.isIntersecting) return;
-      const key = en.target.id.replace("group-", "");
-      if (key !== activeGroup){
-        activeGroup = key;
-        buildSubNav(key);
-      }
-      setActiveChip(groupnav, "group", key);
-      scrollChipIntoView(groupnav);
-    });
-  }, { rootMargin: "-210px 0px -72% 0px", threshold: 0 });
-
+  subSpy?.disconnect();
+  if (view !== "group") return;
   subSpy = new IntersectionObserver((entries) => {
     entries.forEach(en => {
       if (!en.isIntersecting) return;
@@ -308,14 +329,16 @@ function setupSpy(){
       scrollChipIntoView(subnav);
     });
   }, { rootMargin: "-215px 0px -72% 0px", threshold: 0 });
-
-  document.querySelectorAll(".group").forEach(el => groupSpy.observe(el));
   document.querySelectorAll(".cat-section[id]").forEach(el => subSpy.observe(el));
 }
 
 /* делегування кліків у списку меню */
 function attachMenuClicks(el){
   el.addEventListener("click", (e) => {
+    const back = e.target.closest("[data-back]");
+    if (back){ showCats(); return; }
+    const gcard = e.target.closest("[data-group]");
+    if (gcard){ openGroup(gcard.dataset.group); return; }
     const fav = e.target.closest("[data-fav]");
     if (fav){ e.stopPropagation(); toggleFav(+fav.dataset.fav, fav); return; }
     const add = e.target.closest("[data-add]");
@@ -340,11 +363,9 @@ function updateFavCount(){
   document.getElementById("favCount").textContent = favs.size;
 }
 
-/* старт */
+/* старт: показуємо список категорій */
 buildGroupNav();
-renderMenu();
-activeGroup = usedGroups[0]?.key || null;
-buildSubNav(activeGroup);
+showCats();
 updateFavCount();
 
 /* ===========================================================
@@ -357,21 +378,20 @@ document.getElementById("searchToggle").addEventListener("click", () => {
   const show = searchbar.hidden;
   searchbar.hidden = !show;
   if (show){ searchInput.focus(); }
-  else { searchInput.value = ""; if (view === "search") setView("all"); }
+  else { searchInput.value = ""; if (view === "search") showCats(); }
 });
 document.getElementById("searchClear").addEventListener("click", () => {
   searchInput.value = "";
   searchbar.hidden = true;
-  if (view === "search") setView("all");
+  if (view === "search") showCats();
 });
 searchInput.addEventListener("input", () => {
   const q = searchInput.value.trim().toLowerCase();
-  if (!q){ if (view === "search") setView("all"); return; }
+  if (!q){ if (view === "search") showCats(); return; }
   view = "search";
-  tabbar.querySelectorAll(".ftab").forEach(t => t.classList.remove("is-active"));
-  groupnav.style.display = "none";
-  subnav.style.display = "none";
-  groupSpy?.disconnect(); subSpy?.disconnect();
+  clearTabs();
+  showNavs(false, false);
+  subSpy?.disconnect();
   const res = MENU.filter(i => (i.title + " " + i.desc).toLowerCase().includes(q));
   menuRoot.innerHTML = res.length
     ? flatSection(`Результати пошуку (${res.length})`, res)

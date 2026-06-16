@@ -23,22 +23,26 @@
         </span>
       </a>
 
-      <nav class="nav" id="nav">
-        <a href="#menu" class="nav__link">Меню</a>
-        <a href="#reco" class="nav__link">Рекомендації</a>
-        <a href="#gallery" class="nav__link">Фото</a>
-        <a href="#info" class="nav__link">Контакти</a>
-        <a class="nav__phone" id="navPhone" href="#">+38 (000) 000-00-00</a>
-      </nav>
-
       <div class="header__actions">
-        <button class="cart-btn" id="cartOpen" aria-label="Кошик">
-          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <button class="iconbtn" id="searchToggle" aria-label="Пошук">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        </button>
+        <button class="cart-btn iconbtn" id="cartOpen" aria-label="Кошик">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
           <span class="cart-btn__count" id="cartCount">0</span>
         </button>
-        <button class="burger" id="burger" aria-label="Меню" aria-expanded="false">
-          <span></span><span></span><span></span>
+        <button class="iconbtn" id="menuToggle" aria-label="Меню">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
+      </div>
+    </div>
+
+    <!-- Search bar -->
+    <div class="searchbar" id="searchbar" hidden>
+      <div class="container searchbar__inner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        <input id="searchInput" type="search" placeholder="Пошук у меню..." autocomplete="off" />
+        <button id="searchClear" aria-label="Очистити">✕</button>
       </div>
     </div>
   </header>
@@ -83,10 +87,25 @@
     </div>
   </section>
 
-  <!-- ===== Sticky category nav ===== -->
-  <nav class="catnav" id="catnav" aria-label="Категорії меню"><!-- chips injected --></nav>
+  <!-- ===== Sticky nav: tabs + groups + subcategories ===== -->
+  <div class="catnav" id="catnav">
+    <div class="container">
+      <div class="tabbar" id="tabbar">
+        <button class="ftab" data-view="popular">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.2l5.9-.9z"/></svg>
+          Популярне
+        </button>
+        <button class="ftab" data-view="favorites">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 20s-7-4.5-9.2-8.4C1.3 8.9 3 6 6 6c2 0 3.2 1.4 6 4.3C15.8 7.4 17 6 19 6c3 0 4.7 2.9 3.2 5.6C19 15.5 12 20 12 20z"/></svg>
+          Обрані: <span id="favCount">0</span>
+        </button>
+      </div>
+      <div class="groupnav" id="groupnav"><!-- group chips --></div>
+      <div class="subnav" id="subnav"><!-- subcategory chips --></div>
+    </div>
+  </div>
 
-  <!-- ===== Menu (sections by category) ===== -->
+  <!-- ===== Menu ===== -->
   <main class="menu" id="menu">
     <div class="container" id="menuRoot"><!-- sections injected --></div>
   </main>
@@ -115,14 +134,26 @@
         <div class="info-row">
           <span class="info-row__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
           <div><span class="info-row__label">Адреса</span><span class="info-row__val" id="infoAddr">вул. Прикладна, 1, Україна</span></div>
+          <button class="copybtn" data-copy="addr" aria-label="Скопіювати адресу"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button>
         </div>
         <div class="info-row">
           <span class="info-row__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-3 2a13 13 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span>
           <div><span class="info-row__label">Телефон</span><a class="info-row__val" id="infoPhone" href="#">+38 (000) 000-00-00</a></div>
+          <button class="copybtn" data-copy="phone" aria-label="Скопіювати телефон"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button>
         </div>
-        <div class="info-row">
+        <div class="info-row info-row--sched">
           <span class="info-row__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l3 2"/></svg></span>
-          <div><span class="info-row__label">Графік роботи</span><span class="info-row__val">Пн – Нд · 10:00 – 22:00</span></div>
+          <div><span class="info-row__label">Робочий час</span><span class="info-row__val">Сьогодні · 10:00 – 22:00</span></div>
+          <button class="schedbtn" id="schedToggle">Розклад <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
+        </div>
+        <div class="sched" id="sched" hidden>
+          <div class="sched__row"><span>Понеділок</span><span>10:00 – 22:00</span></div>
+          <div class="sched__row"><span>Вівторок</span><span>10:00 – 22:00</span></div>
+          <div class="sched__row"><span>Середа</span><span>10:00 – 22:00</span></div>
+          <div class="sched__row"><span>Четвер</span><span>10:00 – 22:00</span></div>
+          <div class="sched__row"><span>П'ятниця</span><span>10:00 – 22:00</span></div>
+          <div class="sched__row"><span>Субота</span><span>10:00 – 22:00</span></div>
+          <div class="sched__row"><span>Неділя</span><span>10:00 – 22:00</span></div>
         </div>
       </div>
 
@@ -156,9 +187,50 @@
     <div class="container">
       <a href="#top" class="logo"><span class="logo__badge"><span class="logo__script">Sushi</span><span class="logo__ua">U A</span></span></a>
       <p>© <span id="year"></span> SUSHI UA · Усі права захищено</p>
-      <p class="site-foot__demo">Демо-макет сайту · приклад дизайну</p>
+      <p class="site-foot__demo">Демо-макет сайту · зроблено за зразком ChoiceQR</p>
     </div>
   </footer>
+
+  <!-- ===== Side panel (☰) ===== -->
+  <div class="panel-overlay" id="panelOverlay"></div>
+  <aside class="panel" id="panel" aria-label="Меню закладу">
+    <div class="panel__head">
+      <strong>Меню</strong>
+      <button class="panel__close" id="panelClose" aria-label="Закрити">✕</button>
+    </div>
+    <div class="panel__body">
+      <button class="panel__auth" data-info="auth">
+        <span class="panel__auth-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span>
+        <span>Авторизуйтесь</span>
+        <span class="panel__chev">›</span>
+      </button>
+      <p class="panel__hint">Авторизуйтесь, щоб спростити процес замовлення та користуватися додатковими функціями.</p>
+
+      <button class="panel__row" data-info="venue"><span>🍴 Змінити заклад</span><span class="panel__chev">›</span></button>
+
+      <h4 class="panel__h">Контакти</h4>
+      <div class="panel__contact">
+        <span class="panel__contact-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+        <span class="panel__contact-val" id="panelAddr">вул. Прикладна, 1</span>
+        <button class="copybtn" data-copy="addr" aria-label="Скопіювати"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button>
+      </div>
+      <div class="panel__contact">
+        <span class="panel__contact-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-3 2a13 13 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span>
+        <a class="panel__contact-val" id="panelPhone" href="#">+38 (000) 000-00-00</a>
+        <button class="copybtn" data-copy="phone" aria-label="Скопіювати"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button>
+      </div>
+
+      <h4 class="panel__h">Ми в соцмережах</h4>
+      <a class="panel__row" id="panelIg" href="#" target="_blank" rel="noopener"><span><svg class="panel__soc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none"/></svg> Instagram</span><span class="panel__ext">↗</span></a>
+      <a class="panel__row" id="panelTg" href="#" target="_blank" rel="noopener"><span><svg class="panel__soc" viewBox="0 0 24 24" fill="currentColor"><path d="M21.5 4.3L2.9 11.5c-.9.4-.9 1.2-.1 1.4l4.6 1.4 1.8 5.6c.2.6.6.7 1.1.3l2.6-2.1 4.7 3.5c.5.3 1 .1 1.1-.5l3.3-15.4c.2-.8-.3-1.2-1-.9z"/></svg> Telegram</span><span class="panel__ext">↗</span></a>
+      <a class="panel__row" id="panelGoogle" href="#" target="_blank" rel="noopener"><span>🔎 Google</span><span class="panel__ext">↗</span></a>
+
+      <h4 class="panel__h">Корисна інформація</h4>
+      <button class="panel__row" data-info="allergens"><span>Список алергенів</span><span class="panel__chev">›</span></button>
+      <button class="panel__row" data-info="company"><span>Інформація про компанію</span><span class="panel__chev">›</span></button>
+      <button class="panel__row" data-info="cookie"><span>Політика використання файлів cookie</span><span class="panel__chev">›</span></button>
+    </div>
+  </aside>
 
   <!-- ===== Cart drawer ===== -->
   <div class="cart-overlay" id="cartOverlay"></div>
@@ -202,6 +274,14 @@
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Деталі страви">
     <button class="modal__close" id="modalClose" aria-label="Закрити">✕</button>
     <div class="modal__body" id="modalBody"><!-- injected by JS --></div>
+  </div>
+
+  <!-- ===== Info modal (корисна інформація) ===== -->
+  <div class="info-overlay" id="infoOverlay"></div>
+  <div class="info-modal" id="infoModal" role="dialog" aria-modal="true">
+    <button class="info-modal__close" id="infoClose" aria-label="Закрити">✕</button>
+    <h3 id="infoTitle"></h3>
+    <div id="infoText"></div>
   </div>
 
   <script src="script.js"></script>

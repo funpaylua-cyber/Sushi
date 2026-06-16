@@ -16,98 +16,98 @@ const CONFIG = {
 };
 
 /* ===========================================================
-   МЕНЮ (перенесено з актуальних публікацій)
+   КАТЕГОРІЇ (підкатегорії) та ГРУПИ (верхній рівень)
    =========================================================== */
 const CATEGORIES = [
-  { key:"burger",       name:"Суші бургер", icon:"🍔" },
-  { key:"dog",          name:"Sushi Dog",   icon:"🌭" },
-  { key:"philadelphia", name:"Філадельфії", icon:"🍣" },
-  { key:"california",   name:"Каліфорнії",  icon:"🍱" },
-  { key:"dragon",       name:"Дракони",     icon:"🐉" },
-  { key:"cheese",       name:"Чіз роли",    icon:"🧀" },
-  { key:"warm",         name:"Теплі роли",  icon:"🔥" },
-  { key:"maki",         name:"Макі",        icon:"🍙" },
-  { key:"snacks",       name:"Закуски",     icon:"🍟" },
+  { key:"philadelphia", name:"Філадельфії" },
+  { key:"california",   name:"Каліфорнії" },
+  { key:"dragon",       name:"Дракони" },
+  { key:"cheese",       name:"Чіз роли" },
+  { key:"warm",         name:"Теплі роли" },
+  { key:"maki",         name:"Макі" },
+  { key:"burger",       name:"Суші бургери" },
+  { key:"dog",          name:"Sushi Dog" },
+  { key:"snacks",       name:"Закуски та соуси" },
 ];
 
+const GROUPS = [
+  { key:"rolls",  name:"Роли",              subs:["philadelphia","california","dragon","cheese","warm","maki"] },
+  { key:"main",   name:"Бургери та доги",   subs:["burger","dog"] },
+  { key:"snacks", name:"Закуски та соуси",  subs:["snacks"] },
+];
+
+/* ===========================================================
+   МЕНЮ
+   =========================================================== */
 const MENU = [
-  // —— Суші бургер (350–380 г) ——
-  { cat:"burger", emoji:"🍔", title:"Суші бургер «Лосось»",   desc:"Рисова булочка, лосось, овочі, соуси · 350–380 г", price:300, badge:"Хіт" },
-  { cat:"burger", emoji:"🍔", title:"Суші бургер «Креветка»", desc:"Рисова булочка, креветка, овочі, соуси · 350–380 г", price:280 },
-  { cat:"burger", emoji:"🍔", title:"Суші бургер «Курка»",    desc:"Рисова булочка, курка, овочі, соуси · 350–380 г", price:270 },
+  { cat:"burger", title:"Суші бургер «Лосось»",   desc:"Рисова булочка, лосось, овочі, соуси · 350–380 г", price:300, badge:"Хіт" },
+  { cat:"burger", title:"Суші бургер «Креветка»", desc:"Рисова булочка, креветка, овочі, соуси · 350–380 г", price:280 },
+  { cat:"burger", title:"Суші бургер «Курка»",    desc:"Рисова булочка, курка, овочі, соуси · 350–380 г", price:270 },
 
-  // —— Sushi Dog ——
-  { cat:"dog", emoji:"🌭", title:"Sushi Dog «Лосось»",   desc:"Хрустка паніровка, вершковий сир, огірок, лосось", price:290, badge:"Новинка" },
-  { cat:"dog", emoji:"🌭", title:"Sushi Dog «Креветка»", desc:"Соковита креветка, вершковий сир, свіжий огірок", price:280 },
-  { cat:"dog", emoji:"🌭", title:"Sushi Dog «Курка»",    desc:"Ніжна курка, сир, огірок, хрустка скоринка, соуси", price:260 },
+  { cat:"dog", title:"Sushi Dog «Лосось»",   desc:"Хрустка паніровка, вершковий сир, огірок, лосось · 250 г", price:290, badge:"Новинка" },
+  { cat:"dog", title:"Sushi Dog «Креветка»", desc:"Соковита креветка, вершковий сир, свіжий огірок · 250 г", price:280 },
+  { cat:"dog", title:"Sushi Dog «Курка»",    desc:"Ніжна курка, сир, огірок, хрустка скоринка, соуси · 250 г", price:260 },
 
-  // —— Філадельфії ——
-  { cat:"philadelphia", emoji:"🍣", title:"Філадельфія з вугрем",  desc:"Вугор, вершковий сир, рис, норі · 250 г", price:250 },
-  { cat:"philadelphia", emoji:"🍣", title:"Філадельфія з лососем", desc:"Лосось, вершковий сир, рис, норі · 250 г", price:250, badge:"Хіт" },
-  { cat:"philadelphia", emoji:"🍣", title:"Філадельфія з тунцем",  desc:"Тунець, вершковий сир, рис, норі · 250 г", price:250 },
-  { cat:"philadelphia", emoji:"🍣", title:"Філадельфія фреш",      desc:"Свіжі інгредієнти, вершковий сир · 250 г", price:240 },
-  { cat:"philadelphia", emoji:"🍣", title:"Імператор 50/50",       desc:"Мікс лосося та вугра, вершковий сир · 250 г", price:240 },
-  { cat:"philadelphia", emoji:"🍣", title:"Самурай мікс",          desc:"Фірмовий мікс рибних начинок · 250 г", price:250 },
+  { cat:"philadelphia", title:"Філадельфія з вугрем",  desc:"Вугор, вершковий сир, рис, норі · 250 г", price:250 },
+  { cat:"philadelphia", title:"Філадельфія з лососем", desc:"Лосось, вершковий сир, рис, норі · 250 г", price:250, badge:"Хіт" },
+  { cat:"philadelphia", title:"Філадельфія з тунцем",  desc:"Тунець, вершковий сир, рис, норі · 250 г", price:250 },
+  { cat:"philadelphia", title:"Філадельфія фреш",      desc:"Свіжі інгредієнти, вершковий сир · 250 г", price:240 },
+  { cat:"philadelphia", title:"Імператор 50/50",       desc:"Мікс лосося та вугра, вершковий сир · 250 г", price:240 },
+  { cat:"philadelphia", title:"Самурай мікс",          desc:"Фірмовий мікс рибних начинок · 250 г", price:250 },
 
-  // —— Каліфорнії ——
-  { cat:"california", emoji:"🍱", title:"Каліфорнія з лососем",       desc:"Лосось, ікра кунжут · 220 г", price:220 },
-  { cat:"california", emoji:"🍱", title:"Каліфорнія з тунцем",        desc:"Тунець, ікра кунжут · 210 г", price:210 },
-  { cat:"california", emoji:"🍱", title:"Каліфорнія з креветкою",     desc:"Креветка, ікра кунжут · 210 г", price:210 },
-  { cat:"california", emoji:"🍱", title:"Філадельфія 50/50 з тунцем", desc:"Мікс лосося й тунця · 240 г", price:240 },
-  { cat:"california", emoji:"🍱", title:"Філадельфія 50/50 чіз рол",  desc:"Подвійний вершковий сир · 250 г", price:250 },
+  { cat:"california", title:"Каліфорнія з лососем",       desc:"Лосось, ікра масаго, кунжут · 220 г", price:220 },
+  { cat:"california", title:"Каліфорнія з тунцем",        desc:"Тунець, ікра масаго, кунжут · 210 г", price:210 },
+  { cat:"california", title:"Каліфорнія з креветкою",     desc:"Креветка, ікра масаго, кунжут · 210 г", price:210 },
+  { cat:"california", title:"Каліфорнія 50/50 з тунцем",  desc:"Мікс лосося й тунця · 240 г", price:240 },
+  { cat:"california", title:"Каліфорнія 50/50 чіз",       desc:"Подвійний вершковий сир · 250 г", price:250 },
 
-  // —— Дракони ——
-  { cat:"dragon", emoji:"🐉", title:"Чорний дракон",  desc:"Фірмовий рол · 240 г", price:240 },
-  { cat:"dragon", emoji:"🐉", title:"Червоний дракон", desc:"Фірмовий рол · 240 г", price:240 },
-  { cat:"dragon", emoji:"🐉", title:"Зелений дракон",  desc:"Фірмовий рол · 240 г", price:240 },
-  { cat:"dragon", emoji:"🐉", title:"Золотий дракон",  desc:"Фірмовий рол · 240 г", price:240 },
+  { cat:"dragon", title:"Чорний дракон",   desc:"Фірмовий рол з вугрем · 240 г", price:240, badge:"Хіт" },
+  { cat:"dragon", title:"Червоний дракон", desc:"Фірмовий рол з лососем · 240 г", price:240 },
+  { cat:"dragon", title:"Зелений дракон",  desc:"Фірмовий рол з авокадо · 240 г", price:240 },
+  { cat:"dragon", title:"Золотий дракон",  desc:"Фірмовий рол з креветкою · 240 г", price:240 },
 
-  // —— Чіз роли ——
-  { cat:"cheese", emoji:"🧀", title:"Чіз рол огірок",      desc:"Вершковий сир, огірок · 190 г", price:190 },
-  { cat:"cheese", emoji:"🧀", title:"Чіз рол курка",       desc:"Вершковий сир, курка · 190 г", price:190 },
-  { cat:"cheese", emoji:"🧀", title:"Чіз рол сирний",      desc:"Подвійний вершковий сир · 200 г", price:200 },
-  { cat:"cheese", emoji:"🧀", title:"Чіз рол з креветкою", desc:"Вершковий сир, креветка · 220 г", price:220 },
-  { cat:"cheese", emoji:"🧀", title:"Чераезе з томаго",    desc:"Японський омлет томаго · 200 г", price:200 },
-  { cat:"cheese", emoji:"🧀", title:"Футо рол з лососем",  desc:"Великий рол з лососем · 220 г", price:220 },
+  { cat:"cheese", title:"Чіз рол огірок",      desc:"Вершковий сир, огірок · 190 г", price:190 },
+  { cat:"cheese", title:"Чіз рол курка",       desc:"Вершковий сир, курка · 190 г", price:190 },
+  { cat:"cheese", title:"Чіз рол сирний",      desc:"Подвійний вершковий сир · 200 г", price:200 },
+  { cat:"cheese", title:"Чіз рол з креветкою", desc:"Вершковий сир, креветка · 220 г", price:220 },
+  { cat:"cheese", title:"Чіз рол з томаго",    desc:"Японський омлет томаго · 200 г", price:200 },
+  { cat:"cheese", title:"Футо рол з лососем",  desc:"Великий рол з лососем · 220 г", price:220 },
 
-  // —— Теплі роли ——
-  { cat:"warm", emoji:"🔥", title:"Гарячий рол «Курка»",      desc:"Темпура, хрустка скоринка", price:230 },
-  { cat:"warm", emoji:"🔥", title:"Гарячий рол «Креветка»",   desc:"Темпура, хрустка скоринка", price:250 },
-  { cat:"warm", emoji:"🔥", title:"Гарячий рол «Лосось»",     desc:"Темпура, хрустка скоринка", price:260 },
-  { cat:"warm", emoji:"🔥", title:"Запечений рол «Курка»",    desc:"Під сирною шапкою, запечений", price:230 },
-  { cat:"warm", emoji:"🔥", title:"Запечений рол «Креветка»", desc:"Під сирною шапкою, запечений", price:250 },
-  { cat:"warm", emoji:"🔥", title:"Запечений рол «Лосось»",   desc:"Під сирною шапкою, запечений", price:260 },
-  { cat:"warm", emoji:"🔥", title:"Topi maki",                desc:"Теплий фірмовий рол · 260 г", price:260 },
+  { cat:"warm", title:"Гарячий рол «Курка»",      desc:"Темпура, хрустка скоринка · 240 г", price:230 },
+  { cat:"warm", title:"Гарячий рол «Креветка»",   desc:"Темпура, хрустка скоринка · 240 г", price:250 },
+  { cat:"warm", title:"Гарячий рол «Лосось»",     desc:"Темпура, хрустка скоринка · 240 г", price:260 },
+  { cat:"warm", title:"Запечений рол «Курка»",    desc:"Під сирною шапкою, запечений · 240 г", price:230 },
+  { cat:"warm", title:"Запечений рол «Креветка»", desc:"Під сирною шапкою, запечений · 240 г", price:250 },
+  { cat:"warm", title:"Запечений рол «Лосось»",   desc:"Під сирною шапкою, запечений · 240 г", price:260 },
+  { cat:"warm", title:"Topi maki",                desc:"Теплий фірмовий рол · 260 г", price:260 },
 
-  // —— Макі ——
-  { cat:"maki", emoji:"🍙", title:"Унагі Maki",        desc:"Макі з вугром · 130 г", price:130 },
-  { cat:"maki", emoji:"🍙", title:"Maki з лососем",    desc:"Класичний макі · 100 г", price:100 },
-  { cat:"maki", emoji:"🍙", title:"Maki з вугрем",     desc:"Класичний макі · 100 г", price:100 },
-  { cat:"maki", emoji:"🍙", title:"Maki з тунцем",     desc:"Класичний макі · 100 г", price:100 },
-  { cat:"maki", emoji:"🍙", title:"Maki з креветкою",  desc:"Класичний макі · 100 г", price:100 },
-  { cat:"maki", emoji:"🍙", title:"Maki з авокадо",    desc:"Вегетаріанський макі · 100 г", price:100 },
-  { cat:"maki", emoji:"🍙", title:"Maki з огірком",    desc:"Вегетаріанський макі · 100 г", price:100 },
+  { cat:"maki", title:"Унагі Maki",        desc:"Макі з вугром · 130 г", price:130 },
+  { cat:"maki", title:"Maki з лососем",    desc:"Класичний макі · 100 г", price:100 },
+  { cat:"maki", title:"Maki з вугрем",     desc:"Класичний макі · 100 г", price:100 },
+  { cat:"maki", title:"Maki з тунцем",     desc:"Класичний макі · 100 г", price:100 },
+  { cat:"maki", title:"Maki з креветкою",  desc:"Класичний макі · 100 г", price:100 },
+  { cat:"maki", title:"Maki з авокадо",    desc:"Вегетаріанський макі · 100 г", price:100 },
+  { cat:"maki", title:"Maki з огірком",    desc:"Вегетаріанський макі · 100 г", price:100 },
 
-  // —— Закуски та додатки ——
-  { cat:"snacks", emoji:"🍟", title:"Картопляні палички", desc:"Хрустка закуска · 200 г · 1 соус у подарунок", price:120 },
-  { cat:"snacks", emoji:"🥣", title:"Соус «Ніжний часник»", desc:"30 г · домашній соус", price:10 },
-  { cat:"snacks", emoji:"🥣", title:"Соус «Солодкий дим»",  desc:"30 г · домашній соус", price:10 },
-  { cat:"snacks", emoji:"🌶️", title:"Соус «Спайсі»",        desc:"30 г · гострий домашній соус", price:10 },
+  { cat:"snacks", title:"Картопляні палички",   desc:"Хрустка закуска, 1 соус у подарунок · 200 г", price:120 },
+  { cat:"snacks", title:"Соус «Ніжний часник»", desc:"Домашній соус · 30 г", price:10 },
+  { cat:"snacks", title:"Соус «Солодкий дим»",  desc:"Домашній соус · 30 г", price:10 },
+  { cat:"snacks", title:"Соус «Спайсі»",        desc:"Гострий домашній соус · 30 г", price:10 },
 ];
 MENU.forEach((item, i) => item.id = i);
 
 /* ===========================================================
-   ДОБАВКИ (доступні для всіх страв, крім закусок/соусів)
+   ДОБАВКИ
    =========================================================== */
 const ADDONS = [
-  { id:"av",  emoji:"🥑", title:"Авокадо",        price:15 },
-  { id:"ms",  emoji:"🟠", title:"Ікра масаго",     price:20 },
-  { id:"ch",  emoji:"🧀", title:"Подвійний сир",   price:25 },
-  { id:"sp",  emoji:"🌶️", title:"Соус Спайсі",     price:10 },
-  { id:"gl",  emoji:"🧄", title:"Соус Часник",     price:10 },
-  { id:"sd",  emoji:"💨", title:"Соус Солодкий дим", price:10 },
-  { id:"gn",  emoji:"🫚", title:"Імбир",            price:10 },
-  { id:"wb",  emoji:"🥢", title:"Васабі",           price:10 },
+  { id:"av", title:"Авокадо",          price:15 },
+  { id:"ms", title:"Ікра масаго",      price:20 },
+  { id:"ch", title:"Подвійний сир",    price:25 },
+  { id:"sp", title:"Соус Спайсі",      price:10 },
+  { id:"gl", title:"Соус Часник",      price:10 },
+  { id:"sd", title:"Соус Солодкий дим", price:10 },
+  { id:"gn", title:"Імбир",            price:10 },
+  { id:"wb", title:"Васабі",           price:10 },
 ];
 const ADDON_BY_ID = Object.fromEntries(ADDONS.map(a => [a.id, a]));
 const hasAddons = (item) => item.cat !== "snacks";
@@ -117,11 +117,8 @@ const hasAddons = (item) => item.cat !== "snacks";
    =========================================================== */
 const catName = (key) => (CATEGORIES.find(c => c.key === key) || {}).name || "";
 
-/* Елегантна лінійна іконка (фолбек, якщо фото не завантажилось) */
 const DISH_ICON = `<svg class="dish-ic" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><circle cx="28" cy="42" r="15"/><circle cx="28" cy="42" r="7"/><circle cx="52" cy="42" r="15"/><circle cx="52" cy="42" r="7"/><circle cx="52" cy="42" r="2.6" fill="currentColor" stroke="none"/></svg>`;
 
-/* Стокові фото по категоріях (Unsplash). Можна замінити на власні
-   через поле item.img у конкретній страві. */
 const PHOTO = (id) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=640&q=70`;
 const CATEGORY_IMG = {
   burger:       PHOTO("1553621042-f6e147245754"),
@@ -135,21 +132,47 @@ const CATEGORY_IMG = {
   snacks:       PHOTO("1573080496219-bb080dd4f877"),
 };
 const imgFor = (i) => i.img || CATEGORY_IMG[i.cat] || "";
-
-/* Фото з фолбеком: якщо не завантажилось — лишається елегантна іконка під ним */
 const mediaHTML = (i) => {
   const src = imgFor(i);
   return `<span class="dish-fallback">${DISH_ICON}</span>` +
     (src ? `<img class="dish-img" src="${src}" alt="${i.title}" loading="lazy" onerror="this.remove()">` : "");
 };
 
+/* вага окремо + опис без ваги */
+const WEIGHT_RE = /(\d[\d\s–—-]*)\s*г(?![а-яіїєґ])/iu;
+const weightOf = (desc) => { const m = desc.match(WEIGHT_RE); return m ? m[0].replace(/\s+/g, " ").trim() : ""; };
+const descClean = (desc) => desc.replace(/\s*·?\s*\d[\d\s–—-]*\s*г(?![а-яіїєґ])/iu, "").replace(/^\s*·\s*/, "").trim();
+
 /* ===========================================================
-   РЕНДЕР МЕНЮ (категорії-секції + липка навігація)
+   ОБРАНЕ (зберігається в браузері)
    =========================================================== */
-const catnav   = document.getElementById("catnav");
+let favs = new Set();
+try { favs = new Set(JSON.parse(localStorage.getItem("sushi_favs") || "[]")); } catch {}
+const saveFavs = () => { try { localStorage.setItem("sushi_favs", JSON.stringify([...favs])); } catch {} };
+const likeBase = (id) => (id * 7 + 11) % 70 + 8;
+const likeCount = (id) => likeBase(id) + (favs.has(id) ? 1 : 0);
+
+const HEART = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 20s-7-4.5-9.2-8.4C1.3 8.9 3 6 6 6c2 0 3.2 1.4 6 4.3C15.8 7.4 17 6 19 6c3 0 4.7 2.9 3.2 5.6C19 15.5 12 20 12 20z"/></svg>`;
+const SCALE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3"/><path d="M5 6h14l-2.5 4.5H7.5z"/><path d="M6 21h12"/><path d="M9 21v-4a3 3 0 0 1 6 0v4"/></svg>`;
+
+/* ===========================================================
+   РЕНДЕР МЕНЮ (дворівневі категорії / популярне / обрані / пошук)
+   =========================================================== */
 const menuRoot = document.getElementById("menuRoot");
+const groupnav = document.getElementById("groupnav");
+const subnav   = document.getElementById("subnav");
+const tabbar   = document.getElementById("tabbar");
+
+const itemsOf = (subKey) => MENU.filter(i => i.cat === subKey);
+const usedSubs = (group) => group.subs.filter(s => itemsOf(s).length);
+const usedGroups = GROUPS.filter(g => usedSubs(g).length);
+
+let view = "all";          // all | popular | favorites | search
+let activeGroup = null;
 
 function rowHTML(i){
+  const w = weightOf(i.desc);
+  const liked = favs.has(i.id);
   return `
     <article class="row" data-open="${i.id}">
       <div class="row__info">
@@ -158,7 +181,13 @@ function rowHTML(i){
           ${i.badge ? `<span class="row__badge">${i.badge}</span>` : ""}
         </div>
         <span class="row__price">${i.price} ₴</span>
-        <p class="row__desc">${i.desc}</p>
+        <p class="row__desc">${descClean(i.desc)}</p>
+        <div class="row__meta">
+          ${w ? `<span class="row__weight">${SCALE} ${w}</span>` : ""}
+          <button class="row__fav${liked ? " is-on" : ""}" data-fav="${i.id}" aria-label="В обране">
+            ${HEART}<span>${likeCount(i.id)}</span>
+          </button>
+        </div>
       </div>
       <div class="row__media">
         ${mediaHTML(i)}
@@ -167,23 +196,128 @@ function rowHTML(i){
     </article>`;
 }
 
-const usedCats = CATEGORIES.filter(c => MENU.some(i => i.cat === c.key));
+const rowsBlock = (items) => `<div class="rows">${items.map(rowHTML).join("")}</div>`;
 
-catnav.innerHTML = usedCats.map((c, idx) =>
-  `<button class="chip${idx === 0 ? " is-active" : ""}" data-cat="${c.key}">${c.name}</button>`).join("");
+function flatSection(title, items){
+  if (!items.length)
+    return `<div class="emptyview"><p>Тут поки порожньо</p><span>Додайте страви до обраного — натискаючи ♥</span></div>`;
+  return `<section class="cat-section"><h2 class="cat-section__title">${title}</h2>${rowsBlock(items)}</section>`;
+}
 
-menuRoot.innerHTML = usedCats.map(c => {
-  const items = MENU.filter(i => i.cat === c.key);
-  return `
-    <section class="cat-section" id="cat-${c.key}">
-      <h2 class="cat-section__title">${c.name}</h2>
-      <div class="rows">${items.map(rowHTML).join("")}</div>
-    </section>`;
-}).join("");
+function groupsHTML(){
+  return usedGroups.map(g => `
+    <div class="group" id="group-${g.key}">
+      <h2 class="group__title">${g.name}</h2>
+      ${usedSubs(g).map(s => `
+        <section class="cat-section" id="cat-${s}">
+          <h3 class="cat-section__title">${catName(s)}</h3>
+          ${rowsBlock(itemsOf(s))}
+        </section>`).join("")}
+    </div>`).join("");
+}
 
-/* делегування кліків: "+" додає в кошик, решта — відкриває картку */
+const popularItems = () =>
+  [...MENU].sort((a,b) => (b.badge?1:0)-(a.badge?1:0) || likeCount(b.id)-likeCount(a.id)).slice(0, 12);
+const favItems = () => MENU.filter(i => favs.has(i.id));
+
+function renderMenu(){
+  if (view === "popular")        menuRoot.innerHTML = flatSection("Популярне", popularItems());
+  else if (view === "favorites") menuRoot.innerHTML = flatSection("Обрані", favItems());
+  else                           menuRoot.innerHTML = groupsHTML();
+  setupSpy();
+}
+
+/* ---- навігація: вкладки + групи + підкатегорії ---- */
+function buildGroupNav(){
+  groupnav.innerHTML = usedGroups.map((g, i) =>
+    `<button class="chip${i===0?" is-active":""}" data-group="${g.key}">${g.name}</button>`).join("");
+}
+function buildSubNav(groupKey){
+  const g = usedGroups.find(x => x.key === groupKey);
+  if (!g){ subnav.innerHTML = ""; return; }
+  subnav.innerHTML = usedSubs(g).map((s, i) =>
+    `<button class="chip chip--sm${i===0?" is-active":""}" data-sub="${s}">${catName(s)}</button>`).join("");
+}
+
+function setActiveChip(container, attr, value){
+  container.querySelectorAll(".chip").forEach(ch => ch.classList.toggle("is-active", ch.dataset[attr] === value));
+}
+function scrollChipIntoView(container){
+  container.querySelector(".chip.is-active")?.scrollIntoView({ inline:"center", block:"nearest", behavior:"smooth" });
+}
+
+function setView(v){
+  view = v;
+  tabbar.querySelectorAll(".ftab").forEach(t => t.classList.toggle("is-active", t.dataset.view === v));
+  const isMenu = (v === "all");
+  groupnav.style.display = isMenu ? "" : "none";
+  subnav.style.display   = isMenu ? "" : "none";
+  renderMenu();
+  if (isMenu){
+    activeGroup = usedGroups[0]?.key || null;
+    buildSubNav(activeGroup);
+    setActiveChip(groupnav, "group", activeGroup);
+  }
+}
+
+/* tabs (Популярне / Обрані) */
+tabbar.addEventListener("click", (e) => {
+  const t = e.target.closest(".ftab");
+  if (!t) return;
+  setView(view === t.dataset.view ? "all" : t.dataset.view);
+  document.getElementById("menu").scrollIntoView({ behavior:"smooth", block:"start" });
+});
+
+/* групи */
+groupnav.addEventListener("click", (e) => {
+  const chip = e.target.closest(".chip");
+  if (!chip) return;
+  if (view !== "all"){ setView("all"); }
+  document.getElementById("group-" + chip.dataset.group)?.scrollIntoView({ behavior:"smooth", block:"start" });
+});
+/* підкатегорії */
+subnav.addEventListener("click", (e) => {
+  const chip = e.target.closest(".chip");
+  if (!chip) return;
+  document.getElementById("cat-" + chip.dataset.sub)?.scrollIntoView({ behavior:"smooth", block:"start" });
+});
+
+/* scroll-spy для груп та підкатегорій */
+let groupSpy, subSpy;
+function setupSpy(){
+  groupSpy?.disconnect(); subSpy?.disconnect();
+  if (view !== "all") return;
+
+  groupSpy = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      const key = en.target.id.replace("group-", "");
+      if (key !== activeGroup){
+        activeGroup = key;
+        buildSubNav(key);
+      }
+      setActiveChip(groupnav, "group", key);
+      scrollChipIntoView(groupnav);
+    });
+  }, { rootMargin: "-210px 0px -72% 0px", threshold: 0 });
+
+  subSpy = new IntersectionObserver((entries) => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      setActiveChip(subnav, "sub", en.target.id.replace("cat-", ""));
+      scrollChipIntoView(subnav);
+    });
+  }, { rootMargin: "-215px 0px -72% 0px", threshold: 0 });
+
+  document.querySelectorAll(".group").forEach(el => groupSpy.observe(el));
+  document.querySelectorAll(".cat-section[id]").forEach(el => subSpy.observe(el));
+}
+
+/* делегування кліків у списку меню */
 function attachMenuClicks(el){
   el.addEventListener("click", (e) => {
+    const fav = e.target.closest("[data-fav]");
+    if (fav){ e.stopPropagation(); toggleFav(+fav.dataset.fav, fav); return; }
     const add = e.target.closest("[data-add]");
     if (add){ e.stopPropagation(); addToCart(+add.dataset.add); bumpFab(); return; }
     const open = e.target.closest("[data-open]");
@@ -192,26 +326,57 @@ function attachMenuClicks(el){
 }
 attachMenuClicks(menuRoot);
 
-/* липка навігація: клік → плавний скрол до секції */
-const chips = [...catnav.querySelectorAll(".chip")];
-catnav.addEventListener("click", (e) => {
-  const chip = e.target.closest(".chip");
-  if (!chip) return;
-  document.getElementById("cat-" + chip.dataset.cat)
-    ?.scrollIntoView({ behavior: "smooth", block: "start" });
-});
+function toggleFav(id, btn){
+  if (favs.has(id)) favs.delete(id); else favs.add(id);
+  saveFavs();
+  updateFavCount();
+  if (view === "favorites"){ renderMenu(); return; }
+  if (btn){
+    btn.classList.toggle("is-on", favs.has(id));
+    const c = btn.querySelector("span"); if (c) c.textContent = likeCount(id);
+  }
+}
+function updateFavCount(){
+  document.getElementById("favCount").textContent = favs.size;
+}
 
-/* scroll-spy: підсвічуємо активну категорію під час прокручування */
-const spy = new IntersectionObserver((entries) => {
-  entries.forEach(en => {
-    if (!en.isIntersecting) return;
-    const key = en.target.id.replace("cat-", "");
-    chips.forEach(ch => ch.classList.toggle("is-active", ch.dataset.cat === key));
-    catnav.querySelector(".chip.is-active")
-      ?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
-  });
-}, { rootMargin: "-140px 0px -65% 0px", threshold: 0 });
-usedCats.forEach(c => spy.observe(document.getElementById("cat-" + c.key)));
+/* старт */
+buildGroupNav();
+renderMenu();
+activeGroup = usedGroups[0]?.key || null;
+buildSubNav(activeGroup);
+updateFavCount();
+
+/* ===========================================================
+   ПОШУК
+   =========================================================== */
+const searchbar   = document.getElementById("searchbar");
+const searchInput = document.getElementById("searchInput");
+
+document.getElementById("searchToggle").addEventListener("click", () => {
+  const show = searchbar.hidden;
+  searchbar.hidden = !show;
+  if (show){ searchInput.focus(); }
+  else { searchInput.value = ""; if (view === "search") setView("all"); }
+});
+document.getElementById("searchClear").addEventListener("click", () => {
+  searchInput.value = "";
+  searchbar.hidden = true;
+  if (view === "search") setView("all");
+});
+searchInput.addEventListener("input", () => {
+  const q = searchInput.value.trim().toLowerCase();
+  if (!q){ if (view === "search") setView("all"); return; }
+  view = "search";
+  tabbar.querySelectorAll(".ftab").forEach(t => t.classList.remove("is-active"));
+  groupnav.style.display = "none";
+  subnav.style.display = "none";
+  groupSpy?.disconnect(); subSpy?.disconnect();
+  const res = MENU.filter(i => (i.title + " " + i.desc).toLowerCase().includes(q));
+  menuRoot.innerHTML = res.length
+    ? flatSection(`Результати пошуку (${res.length})`, res)
+    : `<div class="emptyview"><p>Нічого не знайдено</p><span>Спробуйте інший запит</span></div>`;
+});
 
 /* ===========================================================
    «МИ РЕКОМЕНДУЄМО» + «НАШІ ФОТОГРАФІЇ»
@@ -219,8 +384,7 @@ usedCats.forEach(c => spy.observe(document.getElementById("cat-" + c.key)));
 const recommended = (() => {
   const flagged = MENU.filter(i => i.badge);
   if (flagged.length >= 6) return flagged;
-  const extra = MENU.filter(i => !i.badge).slice(0, 6 - flagged.length);
-  return flagged.concat(extra);
+  return flagged.concat(MENU.filter(i => !i.badge).slice(0, 6 - flagged.length));
 })();
 
 document.getElementById("recoRow").innerHTML = recommended.map(i => `
@@ -234,14 +398,14 @@ document.getElementById("recoRow").innerHTML = recommended.map(i => `
   </article>`).join("");
 attachMenuClicks(document.getElementById("recoRow"));
 
-const galleryPhotos = [...new Set(usedCats.map(c => CATEGORY_IMG[c.key]).filter(Boolean))];
+const galleryPhotos = [...new Set(CATEGORIES.map(c => CATEGORY_IMG[c.key]).filter(Boolean))];
 document.getElementById("galleryGrid").innerHTML = galleryPhotos.map(src => `
   <div class="ph"><img src="${src}" alt="Фото страви" loading="lazy" onerror="this.parentElement.classList.add('ph--empty')"></div>`).join("");
 
 /* ===========================================================
-   КОШИК (рядки з урахуванням добавок)
+   КОШИК
    =========================================================== */
-const cart = {};   // key -> { id, addons:[ids], qty }
+const cart = {};
 const cartEl      = document.getElementById("cart");
 const overlay     = document.getElementById("cartOverlay");
 const cartItemsEl = document.getElementById("cartItems");
@@ -307,7 +471,6 @@ cartItemsEl.addEventListener("click", (e) => {
   if (del){ delete cart[del.dataset.del]; renderCart(); }
 });
 
-/* ===== Відкриття / закриття кошика ===== */
 function openCart(){ cartEl.classList.add("open"); overlay.classList.add("show"); lockScroll(true); }
 function closeCart(){ cartEl.classList.remove("open"); overlay.classList.remove("show"); lockScroll(false); }
 document.getElementById("cartOpen").addEventListener("click", openCart);
@@ -321,7 +484,7 @@ function bumpFab(){
 }
 
 /* ===========================================================
-   КАРТКА ТОВАРУ (добавки + схожі товари)
+   КАРТКА ТОВАРУ
    =========================================================== */
 const modal        = document.getElementById("modal");
 const modalOverlay = document.getElementById("modalOverlay");
@@ -349,6 +512,7 @@ function productTotal(){
 
 function renderProduct(){
   const i = MENU[pState.id];
+  const w = weightOf(i.desc);
   const addonsBlock = hasAddons(i) ? `
     <div class="pm__section">
       <h4 class="pm__h">Додатки до страви</h4>
@@ -383,7 +547,8 @@ function renderProduct(){
     <div class="pm__main">
       <span class="pm__cat">${catName(i.cat)}</span>
       <h3 class="pm__title">${i.title}</h3>
-      <p class="pm__desc">${i.desc}</p>
+      ${w ? `<span class="pm__weight">${SCALE} ${w}</span>` : ""}
+      <p class="pm__desc">${descClean(i.desc)}</p>
       ${addonsBlock}
       <div class="pm__buy">
         <div class="pm__qty">
@@ -402,7 +567,6 @@ modalBody.addEventListener("click", (e) => {
   const pq = e.target.closest("[data-pq]");
   const sim = e.target.closest("[data-open]");
   const add = e.target.closest("#pmAdd");
-
   if (addon){
     const id = addon.dataset.addon;
     pState.addons.has(id) ? pState.addons.delete(id) : pState.addons.add(id);
@@ -414,16 +578,64 @@ modalBody.addEventListener("click", (e) => {
     openProduct(+sim.dataset.open);
   } else if (add){
     addToCart(pState.id, [...pState.addons], pState.qty);
-    bumpFab();
-    closeProduct();
-    openCart();
+    bumpFab(); closeProduct(); openCart();
   }
 });
 
 document.getElementById("modalClose").addEventListener("click", closeProduct);
 modalOverlay.addEventListener("click", closeProduct);
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape"){ closeProduct(); closeCart(); }
+
+/* ===========================================================
+   БІЧНА ПАНЕЛЬ (☰) + ІНФО-МОДАЛКИ
+   =========================================================== */
+const panel        = document.getElementById("panel");
+const panelOverlay = document.getElementById("panelOverlay");
+function openPanel(){ panel.classList.add("open"); panelOverlay.classList.add("show"); lockScroll(true); }
+function closePanel(){ panel.classList.remove("open"); panelOverlay.classList.remove("show"); lockScroll(false); }
+document.getElementById("menuToggle").addEventListener("click", openPanel);
+document.getElementById("panelClose").addEventListener("click", closePanel);
+panelOverlay.addEventListener("click", closePanel);
+
+const INFO = {
+  auth:      { t:"Авторизація",                          b:"<p>Особистий кабінет доступний у повній версії платформи. У цьому демо-макеті вхід вимкнено.</p>" },
+  venue:     { t:"Змінити заклад",                       b:"<p>Наразі працює один заклад — <b>SUSHI UA</b>.</p>" },
+  allergens: { t:"Список алергенів",                     b:"<p>Страви можуть містити: рибу, морепродукти, яйця, молочні продукти, кунжут, сою та глютен.</p><p>Точний склад уточнюйте у менеджера.</p>" },
+  company:   { t:"Інформація про компанію",              b:"<p><b>SUSHI UA</b> — суші, роли, суші-бургери та Sushi Dog. Готуємо щодня зі свіжих інгредієнтів.</p><p>Замовлення приймаємо в Instagram Direct.</p>" },
+  cookie:    { t:"Політика використання файлів cookie",  b:"<p>Ми використовуємо файли cookie, щоб сайт працював коректно та зручно. Продовжуючи користуватися сайтом, ви погоджуєтесь із цим.</p>" },
+};
+const infoModal   = document.getElementById("infoModal");
+const infoOverlay = document.getElementById("infoOverlay");
+function openInfo(key){
+  const data = INFO[key]; if (!data) return;
+  document.getElementById("infoTitle").textContent = data.t;
+  document.getElementById("infoText").innerHTML = data.b;
+  infoModal.classList.add("open"); infoOverlay.classList.add("show"); lockScroll(true);
+}
+function closeInfo(){ infoModal.classList.remove("open"); infoOverlay.classList.remove("show");
+  if (!panel.classList.contains("open")) lockScroll(false); }
+document.getElementById("infoClose").addEventListener("click", closeInfo);
+infoOverlay.addEventListener("click", closeInfo);
+
+/* копіювання контактів + інфо-кнопки (працює і в панелі, і в контактах) */
+async function copyText(text){
+  try { await navigator.clipboard.writeText(text); }
+  catch { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
+}
+document.addEventListener("click", (e) => {
+  const copy = e.target.closest("[data-copy]");
+  if (copy){
+    copyText(copy.dataset.copy === "phone" ? CONFIG.phoneLabel : CONFIG.address);
+    copy.classList.add("copied"); setTimeout(() => copy.classList.remove("copied"), 1200);
+  }
+  const info = e.target.closest("[data-info]");
+  if (info){ openInfo(info.dataset.info); }
+});
+
+/* розклад */
+document.getElementById("schedToggle").addEventListener("click", () => {
+  const s = document.getElementById("sched");
+  s.hidden = !s.hidden;
+  document.getElementById("schedToggle").classList.toggle("open", !s.hidden);
 });
 
 /* ===========================================================
@@ -445,7 +657,6 @@ function buildOrderText(){
   return t;
 }
 
-// Кнопка Telegram поки неактивна (CONFIG.telegramEnabled = false)
 const sendTgBtn = document.getElementById("sendTg");
 sendTgBtn.disabled = !CONFIG.telegramEnabled;
 if (CONFIG.telegramEnabled){
@@ -457,32 +668,19 @@ if (CONFIG.telegramEnabled){
   });
 }
 
-// Копіювання тексту замовлення в буфер (з резервним способом для старих браузерів)
-async function copyOrderToClipboard(){
-  const order = buildOrderText();
-  try { await navigator.clipboard.writeText(order); }
-  catch {
-    const ta = document.createElement("textarea");
-    ta.value = order; document.body.appendChild(ta);
-    ta.select(); document.execCommand("copy"); ta.remove();
-  }
-}
+async function copyOrderToClipboard(){ await copyText(buildOrderText()); }
 function flashCopied(msg){
   const c = document.getElementById("copied");
   c.textContent = msg || "✓ Замовлення скопійовано";
   c.hidden = false; setTimeout(() => c.hidden = true, 3500);
 }
-
-// Instagram Direct: копіюємо замовлення і відкриваємо чат (вставити + надіслати)
 document.getElementById("sendIg").addEventListener("click", async () => {
   const f = document.getElementById("cartForm");
   if (totalCount() === 0 || !f.reportValidity()) return;
-  // Чат відкриваємо одразу в кліку — інакше popup-блокер може завадити
   window.open(`https://ig.me/m/${CONFIG.instagram}`, "_blank", "noopener");
   await copyOrderToClipboard();
   flashCopied("✓ Замовлення скопійовано — вставте його у Direct і надішліть");
 });
-
 document.getElementById("copyOrder").addEventListener("click", async () => {
   if (totalCount() === 0) return;
   await copyOrderToClipboard();
@@ -490,50 +688,33 @@ document.getElementById("copyOrder").addEventListener("click", async () => {
 });
 
 /* ===========================================================
-   ДРІБНИЦІ
+   ESC + КОНТАКТИ/КАРТА З CONFIG
    =========================================================== */
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape"){ closeInfo(); closeProduct(); closeCart(); closePanel(); }
+});
+
 function lockScroll(on){ document.body.style.overflow = on ? "hidden" : ""; }
 
-const header = document.getElementById("header");
-window.addEventListener("scroll", () => header.classList.toggle("scrolled", window.scrollY > 20));
-
-const burger = document.getElementById("burger");
-const nav = document.getElementById("nav");
-burger.addEventListener("click", () => {
-  const open = nav.classList.toggle("open");
-  burger.classList.toggle("open", open);
-  burger.setAttribute("aria-expanded", open);
-});
-nav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
-  nav.classList.remove("open"); burger.classList.remove("open");
-}));
-
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} });
-}, { threshold:.12 });
-document.querySelectorAll(".reveal").forEach(el => io.observe(el));
-
-/* ===========================================================
-   КОНТАКТИ, СОЦМЕРЕЖІ, КАРТА, ГРАФІК — з CONFIG
-   =========================================================== */
-function setText(id, val){ const el = document.getElementById(id); if (el) el.textContent = val; }
-function setAttr(id, attr, val){ const el = document.getElementById(id); if (el) el.setAttribute(attr, val); }
+const setText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+const setAttr = (id, attr, val) => { const el = document.getElementById(id); if (el) el.setAttribute(attr, val); };
 
 setText("venueAddr", CONFIG.address);
 setText("infoAddr", CONFIG.address);
+setText("panelAddr", CONFIG.address);
 setText("hrDinein", CONFIG.hours.dinein);
 setText("hrTakeaway", CONFIG.hours.takeaway);
 setText("hrDelivery", CONFIG.hours.delivery);
 
-setText("infoPhone", CONFIG.phoneLabel);
-setAttr("infoPhone", "href", "tel:" + CONFIG.phone);
-setText("navPhone", CONFIG.phoneLabel);
-setAttr("navPhone", "href", "tel:" + CONFIG.phone);
+setText("infoPhone", CONFIG.phoneLabel);  setAttr("infoPhone", "href", "tel:" + CONFIG.phone);
+setText("panelPhone", CONFIG.phoneLabel); setAttr("panelPhone", "href", "tel:" + CONFIG.phone);
 
-setAttr("igLink", "href", "https://instagram.com/" + CONFIG.instagram);
-setAttr("tgLink", "href", "https://t.me/" + CONFIG.telegram);
-
+const igUrl = "https://instagram.com/" + CONFIG.instagram;
+const tgUrl = "https://t.me/" + CONFIG.telegram;
 const mapQ = encodeURIComponent(CONFIG.mapQuery);
+setAttr("igLink", "href", igUrl);  setAttr("panelIg", "href", igUrl);
+setAttr("tgLink", "href", tgUrl);  setAttr("panelTg", "href", tgUrl);
+setAttr("panelGoogle", "href", `https://www.google.com/maps/search/?api=1&query=${mapQ}`);
 setAttr("map", "src", `https://maps.google.com/maps?q=${mapQ}&z=15&output=embed`);
 setAttr("routeBtn", "href", `https://www.google.com/maps/search/?api=1&query=${mapQ}`);
 

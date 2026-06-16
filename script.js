@@ -27,13 +27,20 @@ const CATEGORIES = [
   { key:"maki",         name:"Макі" },
   { key:"burger",       name:"Суші бургери" },
   { key:"dog",          name:"Sushi Dog" },
+  { key:"pizza",        name:"Піца" },
+  { key:"shawarma",     name:"Шаурма" },
+  { key:"cold",         name:"Холодні напої" },
+  { key:"hot",          name:"Теплі напої" },
   { key:"snacks",       name:"Закуски та соуси" },
 ];
 
 const GROUPS = [
-  { key:"rolls",  name:"Роли",              subs:["philadelphia","california","dragon","cheese","warm","maki"] },
-  { key:"main",   name:"Бургери та доги",   subs:["burger","dog"] },
-  { key:"snacks", name:"Закуски та соуси",  subs:["snacks"] },
+  { key:"rolls",    name:"Роли",             subs:["philadelphia","california","dragon","cheese","warm","maki"] },
+  { key:"main",     name:"Бургери та доги",  subs:["burger","dog"] },
+  { key:"pizza",    name:"Піца",             subs:["pizza"] },
+  { key:"shawarma", name:"Шаурма",           subs:["shawarma"] },
+  { key:"drinks",   name:"Напої",            subs:["cold","hot"] },
+  { key:"snacks",   name:"Закуски та соуси", subs:["snacks"] },
 ];
 
 /* ===========================================================
@@ -89,6 +96,26 @@ const MENU = [
   { cat:"maki", title:"Maki з авокадо",    desc:"Вегетаріанський макі · 100 г", price:100 },
   { cat:"maki", title:"Maki з огірком",    desc:"Вегетаріанський макі · 100 г", price:100 },
 
+  // —— Піца (ДЕМО — замініть назви/ціни/вагу на свої) ——
+  { cat:"pizza", title:"Піца «Маргарита»",   desc:"Томатний соус, моцарела, базилік · 30 см", price:180, badge:"Демо" },
+  { cat:"pizza", title:"Піца «Пепероні»",    desc:"Пепероні, моцарела, томатний соус · 30 см", price:220 },
+  { cat:"pizza", title:"Піца «Чотири сири»", desc:"Моцарела, дорблю, пармезан, чеддер · 30 см", price:240 },
+
+  // —— Шаурма (ДЕМО) ——
+  { cat:"shawarma", title:"Шаурма класична",  desc:"Курка, овочі, соус, лаваш · 300 г", price:120, badge:"Демо" },
+  { cat:"shawarma", title:"Шаурма гостра",    desc:"Курка, овочі, гострий соус · 300 г", price:130 },
+  { cat:"shawarma", title:"Шаурма по-домашньому", desc:"Подвійна порція м'яса · 380 г", price:160 },
+
+  // —— Холодні напої (ДЕМО) ——
+  { cat:"cold", title:"Coca-Cola 0.5 л", desc:"Газований напій", price:35, badge:"Демо" },
+  { cat:"cold", title:"Сік в асортименті 0.3 л", desc:"Яблуко / апельсин / мультифрукт", price:30 },
+  { cat:"cold", title:"Вода негазована 0.5 л", desc:"Питна вода", price:20 },
+
+  // —— Теплі напої (ДЕМО) ——
+  { cat:"hot", title:"Чай чорний / зелений", desc:"Ароматний чай · 300 мл", price:30, badge:"Демо" },
+  { cat:"hot", title:"Кава американо",       desc:"Свіжозварена кава · 200 мл", price:40 },
+  { cat:"hot", title:"Капучино",             desc:"Кава з молочною пінкою · 250 мл", price:50 },
+
   { cat:"snacks", title:"Картопляні палички",   desc:"Хрустка закуска, 1 соус у подарунок · 200 г", price:120 },
   { cat:"snacks", title:"Соус «Ніжний часник»", desc:"Домашній соус · 30 г", price:10 },
   { cat:"snacks", title:"Соус «Солодкий дим»",  desc:"Домашній соус · 30 г", price:10 },
@@ -129,6 +156,10 @@ const CATEGORY_IMG = {
   cheese:       PHOTO("1607301405390-d831c242f59b"),
   warm:         PHOTO("1583623025817-d180a2221d0a"),
   maki:         PHOTO("1564489563601-c53cfc451e93"),
+  pizza:        PHOTO("1513104890138-7c749659a591"),
+  shawarma:     PHOTO("1633321088355-d0f81134ca3b"),
+  cold:         PHOTO("1437418747212-8d9709afab22"),
+  hot:          PHOTO("1495474472287-4d71bcdd2085"),
   snacks:       PHOTO("1573080496219-bb080dd4f877"),
 };
 const imgFor = (i) => i.img || CATEGORY_IMG[i.cat] || "";

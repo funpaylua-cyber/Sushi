@@ -2,10 +2,17 @@
    НАЛАШТУВАННЯ — замініть на свої контакти
    =========================================================== */
 const CONFIG = {
-  instagram: "sushiua_",  // username в Instagram (без @) — замовлення відкривається у Direct
-  telegram: "sushiua_",   // username у Telegram (без @) — для майбутнього онлайн-замовлення
   shopName: "SUSHI UA",
-  telegramEnabled: false, // ← поставте true, коли налаштуєте онлайн-замовлення в Telegram
+  instagram: "sushiua_",   // username в Instagram (без @)
+  telegram: "sushiua_",    // username у Telegram (без @)
+  telegramEnabled: false,  // ← true, коли налаштуєте онлайн-замовлення в Telegram
+
+  // Контакти та локація (замініть на свої)
+  phone: "+380000000000",                 // для посилання tel:
+  phoneLabel: "+38 (000) 000-00-00",      // як показувати на сайті
+  address: "вул. Прикладна, 1, Україна",  // адреса закладу
+  mapQuery: "Київ, Україна",              // що шукати на Google Maps (адреса або координати)
+  hours: { dinein: "10:00–22:00", takeaway: "10:00–22:00", delivery: "10:00–22:00" },
 };
 
 /* ===========================================================
@@ -106,15 +113,8 @@ const ADDON_BY_ID = Object.fromEntries(ADDONS.map(a => [a.id, a]));
 const hasAddons = (item) => item.cat !== "snacks";
 
 /* ===========================================================
-   РЕНДЕР МЕНЮ + ВКЛАДКИ
+   ФОТО + ФОЛБЕК-ІКОНКА
    =========================================================== */
-const grid = document.getElementById("menuGrid");
-const tabsEl = document.getElementById("tabs");
-
-tabsEl.innerHTML =
-  `<button class="tab is-active" data-filter="all">Все меню</button>` +
-  CATEGORIES.map(c => `<button class="tab" data-filter="${c.key}">${c.name}</button>`).join("");
-
 const catName = (key) => (CATEGORIES.find(c => c.key === key) || {}).name || "";
 
 /* Елегантна лінійна іконка (фолбек, якщо фото не завантажилось) */
@@ -143,46 +143,100 @@ const mediaHTML = (i) => {
     (src ? `<img class="dish-img" src="${src}" alt="${i.title}" loading="lazy" onerror="this.remove()">` : "");
 };
 
-function cardHTML(i){
+/* ===========================================================
+   РЕНДЕР МЕНЮ (категорії-секції + липка навігація)
+   =========================================================== */
+const catnav   = document.getElementById("catnav");
+const menuRoot = document.getElementById("menuRoot");
+
+function rowHTML(i){
   return `
-    <article class="card" data-open="${i.id}">
-      <div class="card__media">
-        ${i.badge ? `<span class="card__badge">${i.badge}</span>` : ""}
-        <span class="card__cat">${catName(i.cat)}</span>
-        ${mediaHTML(i)}
-      </div>
-      <div class="card__body">
-        <h3 class="card__title">${i.title}</h3>
-        <p class="card__desc">${i.desc}</p>
-        <div class="card__foot">
-          <span class="card__price">${i.price} ₴</span>
-          <button class="card__btn" data-add="${i.id}" aria-label="Додати ${i.title}" title="Додати в кошик">+</button>
+    <article class="row" data-open="${i.id}">
+      <div class="row__info">
+        <div class="row__head">
+          <h3 class="row__title">${i.title}</h3>
+          ${i.badge ? `<span class="row__badge">${i.badge}</span>` : ""}
         </div>
+        <span class="row__price">${i.price} ₴</span>
+        <p class="row__desc">${i.desc}</p>
+      </div>
+      <div class="row__media">
+        ${mediaHTML(i)}
+        <button class="row__add" data-add="${i.id}" aria-label="Додати ${i.title}" title="Додати в кошик">+</button>
       </div>
     </article>`;
 }
 
-function render(filter = "all"){
-  const items = filter === "all" ? MENU : MENU.filter(i => i.cat === filter);
-  grid.innerHTML = items.map(cardHTML).join("");
+const usedCats = CATEGORIES.filter(c => MENU.some(i => i.cat === c.key));
+
+catnav.innerHTML = usedCats.map((c, idx) =>
+  `<button class="chip${idx === 0 ? " is-active" : ""}" data-cat="${c.key}">${c.name}</button>`).join("");
+
+menuRoot.innerHTML = usedCats.map(c => {
+  const items = MENU.filter(i => i.cat === c.key);
+  return `
+    <section class="cat-section" id="cat-${c.key}">
+      <h2 class="cat-section__title">${c.name}</h2>
+      <div class="rows">${items.map(rowHTML).join("")}</div>
+    </section>`;
+}).join("");
+
+/* делегування кліків: "+" додає в кошик, решта — відкриває картку */
+function attachMenuClicks(el){
+  el.addEventListener("click", (e) => {
+    const add = e.target.closest("[data-add]");
+    if (add){ e.stopPropagation(); addToCart(+add.dataset.add); bumpFab(); return; }
+    const open = e.target.closest("[data-open]");
+    if (open) openProduct(+open.dataset.open);
+  });
 }
-render();
+attachMenuClicks(menuRoot);
 
-tabsEl.addEventListener("click", (e) => {
-  const tab = e.target.closest(".tab");
-  if (!tab) return;
-  tabsEl.querySelectorAll(".tab").forEach(t => t.classList.remove("is-active"));
-  tab.classList.add("is-active");
-  render(tab.dataset.filter);
+/* липка навігація: клік → плавний скрол до секції */
+const chips = [...catnav.querySelectorAll(".chip")];
+catnav.addEventListener("click", (e) => {
+  const chip = e.target.closest(".chip");
+  if (!chip) return;
+  document.getElementById("cat-" + chip.dataset.cat)
+    ?.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
-// клік по картці відкриває деталі; клік по "+" швидко додає
-grid.addEventListener("click", (e) => {
-  const add = e.target.closest("[data-add]");
-  if (add){ e.stopPropagation(); addToCart(+add.dataset.add); bumpFab(); return; }
-  const open = e.target.closest("[data-open]");
-  if (open) openProduct(+open.dataset.open);
-});
+/* scroll-spy: підсвічуємо активну категорію під час прокручування */
+const spy = new IntersectionObserver((entries) => {
+  entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    const key = en.target.id.replace("cat-", "");
+    chips.forEach(ch => ch.classList.toggle("is-active", ch.dataset.cat === key));
+    catnav.querySelector(".chip.is-active")
+      ?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+  });
+}, { rootMargin: "-140px 0px -65% 0px", threshold: 0 });
+usedCats.forEach(c => spy.observe(document.getElementById("cat-" + c.key)));
+
+/* ===========================================================
+   «МИ РЕКОМЕНДУЄМО» + «НАШІ ФОТОГРАФІЇ»
+   =========================================================== */
+const recommended = (() => {
+  const flagged = MENU.filter(i => i.badge);
+  if (flagged.length >= 6) return flagged;
+  const extra = MENU.filter(i => !i.badge).slice(0, 6 - flagged.length);
+  return flagged.concat(extra);
+})();
+
+document.getElementById("recoRow").innerHTML = recommended.map(i => `
+  <article class="reco-card" data-open="${i.id}">
+    <span class="reco-card__media">${mediaHTML(i)}</span>
+    <span class="reco-card__body">
+      <span class="reco-card__price">${i.price} ₴</span>
+      <span class="reco-card__title">${i.title}</span>
+    </span>
+    <button class="reco-card__add" data-add="${i.id}" aria-label="Додати ${i.title}">+ Додати</button>
+  </article>`).join("");
+attachMenuClicks(document.getElementById("recoRow"));
+
+const galleryPhotos = [...new Set(usedCats.map(c => CATEGORY_IMG[c.key]).filter(Boolean))];
+document.getElementById("galleryGrid").innerHTML = galleryPhotos.map(src => `
+  <div class="ph"><img src="${src}" alt="Фото страви" loading="lazy" onerror="this.parentElement.classList.add('ph--empty')"></div>`).join("");
 
 /* ===========================================================
    КОШИК (рядки з урахуванням добавок)
@@ -257,7 +311,6 @@ cartItemsEl.addEventListener("click", (e) => {
 function openCart(){ cartEl.classList.add("open"); overlay.classList.add("show"); lockScroll(true); }
 function closeCart(){ cartEl.classList.remove("open"); overlay.classList.remove("show"); lockScroll(false); }
 document.getElementById("cartOpen").addEventListener("click", openCart);
-document.getElementById("cartOpen2").addEventListener("click", openCart);
 document.getElementById("fab").addEventListener("click", openCart);
 document.getElementById("cartClose").addEventListener("click", closeCart);
 overlay.addEventListener("click", closeCart);
@@ -459,6 +512,30 @@ const io = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} });
 }, { threshold:.12 });
 document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+/* ===========================================================
+   КОНТАКТИ, СОЦМЕРЕЖІ, КАРТА, ГРАФІК — з CONFIG
+   =========================================================== */
+function setText(id, val){ const el = document.getElementById(id); if (el) el.textContent = val; }
+function setAttr(id, attr, val){ const el = document.getElementById(id); if (el) el.setAttribute(attr, val); }
+
+setText("venueAddr", CONFIG.address);
+setText("infoAddr", CONFIG.address);
+setText("hrDinein", CONFIG.hours.dinein);
+setText("hrTakeaway", CONFIG.hours.takeaway);
+setText("hrDelivery", CONFIG.hours.delivery);
+
+setText("infoPhone", CONFIG.phoneLabel);
+setAttr("infoPhone", "href", "tel:" + CONFIG.phone);
+setText("navPhone", CONFIG.phoneLabel);
+setAttr("navPhone", "href", "tel:" + CONFIG.phone);
+
+setAttr("igLink", "href", "https://instagram.com/" + CONFIG.instagram);
+setAttr("tgLink", "href", "https://t.me/" + CONFIG.telegram);
+
+const mapQ = encodeURIComponent(CONFIG.mapQuery);
+setAttr("map", "src", `https://maps.google.com/maps?q=${mapQ}&z=15&output=embed`);
+setAttr("routeBtn", "href", `https://www.google.com/maps/search/?api=1&query=${mapQ}`);
 
 document.getElementById("year").textContent = new Date().getFullYear();
 updateBadges();
